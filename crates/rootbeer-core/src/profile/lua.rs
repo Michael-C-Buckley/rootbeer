@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use mlua::{Function, Lua, Table, Value};
 
 use crate::lua::module::Module;
-use crate::profile::error::ProfileError;
+use crate::profile::error::{ProfileError, ProfileErrorContext};
 use crate::profile::spec::{Setup, Spec, Strategy};
 use crate::profile::ProfileContext;
 
@@ -132,6 +132,7 @@ fn resolve_cli(lua: &Lua, _: &StrategyFacts) -> mlua::Result<Option<String>> {
 
     if !s.schema().unwrap().contains_key(cli) {
         return Err(ProfileError::Required {
+            context: ProfileErrorContext::Cli,
             active: Some(cli.to_string()),
             profiles: s.schema_keys(),
         }
@@ -143,6 +144,7 @@ fn resolve_cli(lua: &Lua, _: &StrategyFacts) -> mlua::Result<Option<String>> {
 
 fn missing_cli(lua: &Lua, _: &StrategyFacts) -> ProfileError {
     ProfileError::Required {
+        context: ProfileErrorContext::Cli,
         active: None,
         profiles: state(lua).schema_keys(),
     }
@@ -236,6 +238,7 @@ fn resolve_custom(lua: &Lua, f: Function, facts: StrategyFacts) -> mlua::Result<
             let name = s.to_str()?.to_string();
             if !state(lua).schema().unwrap().contains_key(&name) {
                 return Err(ProfileError::Required {
+                    context: ProfileErrorContext::Strategy,
                     active: Some(name),
                     profiles: state(lua).schema_keys(),
                 }
@@ -298,6 +301,7 @@ fn select(lua: &Lua, map: Table) -> mlua::Result<Value> {
         let (k, _) = pair?;
         if k != "default" && !schema.contains_key(&k) {
             return Err(ProfileError::Required {
+                context: ProfileErrorContext::Reference("rb.profile.select"),
                 active: Some(k),
                 profiles: schema.keys().cloned().collect(),
             }
@@ -322,6 +326,7 @@ fn select(lua: &Lua, map: Table) -> mlua::Result<Value> {
         .filter_map(|p| p.ok().map(|(k, _)| k))
         .collect();
     Err(ProfileError::Required {
+        context: ProfileErrorContext::Value("rb.profile.select"),
         active: s.active().map(String::from),
         profiles: map_keys,
     }
@@ -346,6 +351,7 @@ fn when(lua: &Lua, (names, fn_): (Value, Function)) -> mlua::Result<()> {
     for n in &names_vec {
         if !schema.contains_key(n) {
             return Err(ProfileError::Required {
+                context: ProfileErrorContext::Reference("rb.profile.when"),
                 active: Some(n.clone()),
                 profiles: schema.keys().cloned().collect(),
             }
@@ -372,6 +378,7 @@ fn config(lua: &Lua, map: Table) -> mlua::Result<()> {
         let (k, _) = pair?;
         if !schema.contains_key(&k) {
             return Err(ProfileError::Required {
+                context: ProfileErrorContext::Reference("rb.profile.config"),
                 active: Some(k),
                 profiles: schema.keys().cloned().collect(),
             }

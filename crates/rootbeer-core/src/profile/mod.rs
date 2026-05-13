@@ -12,7 +12,7 @@ mod spec;
 
 use std::collections::BTreeMap;
 
-pub use error::ProfileError;
+pub use error::{ProfileError, ProfileErrorContext};
 pub(crate) use lua::Profile;
 pub use name::NameError;
 pub use spec::{Spec, Strategy};
