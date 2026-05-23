@@ -10,21 +10,25 @@ struct HostInfo {
     /// The CPU architecture, e.g. "x86_64", "aarch64".
     arch: String,
 
-    /// The hostname of the machine, if available.
+    /// The hostname of the machine, if available (uses `HOSTNAME` if set).
     hostname: Option<String>,
 
-    /// The username of the current user.
+    /// The username of the current user (uses `USER` if set).
     user: String,
 
-    /// The home directory of the current user.
+    /// The home directory of the resolved user.
     home: String,
 
-    /// The login shell of the current user.
+    /// The login shell of the resolved user.
     shell: String,
 }
 
 /// Unsafely retrieves the hostname using libc. Returns None if the call fails.
 fn get_hostname() -> Option<String> {
+    if let Ok(hostname) = std::env::var("HOSTNAME") {
+        return Some(hostname.trim_end_matches('\0').to_string());
+    }
+
     let size = unsafe { libc::sysconf(libc::_SC_HOST_NAME_MAX + 1).max(256) } as usize;
     let mut buf = vec![0u8; size];
 
@@ -37,30 +41,44 @@ fn get_hostname() -> Option<String> {
     String::from_utf8(buf[..len].to_vec()).ok()
 }
 
-/// Information from the passwd entry for the current user.
-struct PasswdInfo {
+/// A representation of the user's passwd DB entry
+struct UserInfo {
     name: String,
     dir: String,
     shell: String,
 }
 
-/// Unsafely retrieves the passwd entry for the current user using libc.
-/// Returns None if the call fails.
-fn get_passwd() -> Option<PasswdInfo> {
-    let uid = unsafe { libc::getuid() };
-    let buf_size = unsafe { libc::sysconf(libc::_SC_GETPW_R_SIZE_MAX).max(4096) } as usize;
-    let mut buf = vec![0u8; buf_size];
-
+/// Fetches a UserInfo struct for the current user via the passwd database.
+fn get_user() -> Option<UserInfo> {
+    let mut passwd_buf = vec![0u8; 4096];
     let mut pwd: libc::passwd = unsafe { std::mem::zeroed() };
     let mut result: *mut libc::passwd = std::ptr::null_mut();
-    let ret = unsafe {
-        libc::getpwuid_r(
-            uid,
-            &mut pwd,
-            buf.as_mut_ptr().cast(),
-            buf_size,
-            &mut result,
-        )
+
+    let ret = match std::env::var("USER") {
+        Ok(user) => {
+            let c_user = std::ffi::CString::new(user).ok()?;
+            unsafe {
+                libc::getpwnam_r(
+                    c_user.as_ptr(),
+                    &mut pwd,
+                    passwd_buf.as_mut_ptr().cast(),
+                    passwd_buf.len(),
+                    &mut result,
+                )
+            }
+        }
+        Err(_) => {
+            let uid = unsafe { libc::getuid() };
+            unsafe {
+                libc::getpwuid_r(
+                    uid,
+                    &mut pwd,
+                    passwd_buf.as_mut_ptr().cast(),
+                    passwd_buf.len(),
+                    &mut result,
+                )
+            }
+        }
     };
 
     if ret != 0 || result.is_null() {
@@ -77,7 +95,7 @@ fn get_passwd() -> Option<PasswdInfo> {
         std::str::from_utf8(bytes).ok().map(String::from)
     };
 
-    Some(PasswdInfo {
+    Some(UserInfo {
         name: to_string(pwd.pw_name)?,
         dir: to_string(pwd.pw_dir)?,
         shell: to_string(pwd.pw_shell)?,
@@ -103,7 +121,7 @@ impl Module for Sys {
     const NAME: &'static str = "";
 
     fn build(_lua: &Lua, t: &Table) -> LuaResult<()> {
-        let passwd = get_passwd()
+        let user = get_user()
             .ok_or_else(|| mlua::Error::runtime("failed to read passwd entry for current user"))?;
 
         t.set(
@@ -112,9 +130,9 @@ impl Module for Sys {
                 os: std::env::consts::OS.to_string(),
                 arch: std::env::consts::ARCH.to_string(),
                 hostname: get_hostname(),
-                user: passwd.name,
-                home: passwd.dir,
-                shell: passwd.shell,
+                user: user.name,
+                home: user.dir,
+                shell: user.shell,
             },
         )?;
         Ok(())
