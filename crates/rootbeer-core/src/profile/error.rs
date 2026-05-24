@@ -1,6 +1,14 @@
 use super::NameError;
 use std::fmt;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProfileErrorContext {
+    Cli,
+    Strategy,
+    Reference(&'static str),
+    Value(&'static str),
+}
+
 #[derive(Debug, Clone)]
 pub enum ProfileError {
     NotConfigured,
@@ -13,6 +21,7 @@ pub enum ProfileError {
     },
     InvalidStrategy(String),
     Required {
+        context: ProfileErrorContext,
         active: Option<String>,
         profiles: Vec<String>,
     },
@@ -53,11 +62,41 @@ impl fmt::Display for ProfileError {
                 f,
                 "unknown strategy '{s}', expected 'cli', 'hostname', 'user', 'command', or a function"
             ),
-            Self::Required { active, profiles } => {
+            Self::Required {
+                context,
+                active,
+                profiles,
+            } => {
                 let known = profiles.join(", ");
-                match active {
-                    Some(n) => write!(f, "unknown profile '{n}', expected one of: {known}"),
-                    None => write!(f, "a profile is required, expected one of: {known}"),
+                match (context, active) {
+                    (ProfileErrorContext::Cli, Some(n)) => {
+                        write!(f, "unknown --profile '{n}', expected one of: {known}")
+                    }
+                    (ProfileErrorContext::Cli, None) => {
+                        write!(f, "a profile is required; pass --profile with one of: {known}")
+                    }
+                    (ProfileErrorContext::Strategy, Some(n)) => write!(
+                        f,
+                        "profile strategy returned unknown profile '{n}', expected one of: {known}"
+                    ),
+                    (ProfileErrorContext::Strategy, None) => {
+                        write!(f, "profile strategy did not choose a profile, expected one of: {known}")
+                    }
+                    (ProfileErrorContext::Reference(api), Some(n)) => write!(
+                        f,
+                        "{api} references unknown profile '{n}', expected one of: {known}"
+                    ),
+                    (ProfileErrorContext::Reference(api), None) => {
+                        write!(f, "{api} requires a profile name, expected one of: {known}")
+                    }
+                    (ProfileErrorContext::Value(api), Some(n)) => write!(
+                        f,
+                        "{api} has no value for active profile '{n}' and no default; available keys: {known}"
+                    ),
+                    (ProfileErrorContext::Value(api), None) => write!(
+                        f,
+                        "{api} needs an active profile or a default value; available keys: {known}"
+                    ),
                 }
             }
             Self::NoMatch {

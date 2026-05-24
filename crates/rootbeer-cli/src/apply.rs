@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use owo_colors::OwoColorize;
-use rootbeer_core::profile::ProfileError;
+use rootbeer_core::profile::{ProfileError, ProfileErrorContext};
 use rootbeer_core::{ExecutionHandler, Op, OpResult};
 
 /// Apply the rootbeer configuration
@@ -165,26 +165,103 @@ pub fn run(args: Args, lua_dir: Option<&PathBuf>) {
 
 fn profile_hint(err: &ProfileError) -> Option<String> {
     match err {
-        ProfileError::Required { active, profiles } if !profiles.is_empty() => {
-            let mut out = format!(
-                "  {} {}",
-                "hint:".dimmed(),
-                format!("rb apply --profile <{}>", profiles.join("|")).cyan()
-            );
-            if let Some(name) = active {
-                if let Some(suggestion) = closest_match(name, profiles) {
-                    out.push_str(&format!(" (did you mean '{}'?)", suggestion.cyan()));
+        ProfileError::Required {
+            context,
+            active,
+            profiles,
+        } if !profiles.is_empty() => match *context {
+            ProfileErrorContext::Cli => {
+                let valid = format!("rb apply --profile <{}>", profiles.join("|"));
+                let mut out = match active {
+                    Some(name) => format!(
+                        "  {} add profile '{}' to {} or pass one of: {}",
+                        "hint:".dimmed(),
+                        name.cyan(),
+                        "rb.profile.define(...)".cyan(),
+                        valid.cyan()
+                    ),
+                    None => format!("  {} {}", "hint:".dimmed(), valid.cyan()),
+                };
+                if let Some(name) = active {
+                    append_profile_suggestion(&mut out, name, profiles);
                 }
+                Some(out)
             }
-            Some(out)
-        }
-        ProfileError::NoMatch { profiles, .. } if !profiles.is_empty() => Some(format!(
-            "  {} extend {} or compose {} into your strategy",
-            "hint:".dimmed(),
-            "rb.profile.define(...)".cyan(),
-            "ctx.cli()".cyan()
-        )),
+            ProfileErrorContext::Strategy => active.as_ref().map(|name| {
+                let mut out = format!(
+                    "  {} return one of <{}> from the profile strategy or add '{}' to {}",
+                    "hint:".dimmed(),
+                    profiles.join("|"),
+                    name.cyan(),
+                    "rb.profile.define(...)".cyan()
+                );
+                append_profile_suggestion(&mut out, name, profiles);
+                out
+            }),
+            ProfileErrorContext::Reference(api) => active.as_ref().map(|name| {
+                let mut out = format!(
+                    "  {} add '{}' to {} or fix the {} profile name",
+                    "hint:".dimmed(),
+                    name.cyan(),
+                    "rb.profile.define(...)".cyan(),
+                    api.cyan()
+                );
+                append_profile_suggestion(&mut out, name, profiles);
+                out
+            }),
+            ProfileErrorContext::Value(api) => Some(match active {
+                Some(name) => format!(
+                    "  {} add {} = ... or default = ... to {}",
+                    "hint:".dimmed(),
+                    name.cyan(),
+                    api.cyan()
+                ),
+                None => format!(
+                    "  {} add default = ... to {} or choose an active profile",
+                    "hint:".dimmed(),
+                    api.cyan()
+                ),
+            }),
+        },
+        ProfileError::NoMatch {
+            strategy,
+            value,
+            profiles,
+        } if !profiles.is_empty() => match (*strategy, value.as_deref()) {
+            ("hostname", Some(hostname)) => Some(format!(
+                "  {} add hostname '{}' to a matcher in {} or add one fallback profile with {}",
+                "hint:".dimmed(),
+                hostname.cyan(),
+                "rb.profile.define(...)".cyan(),
+                "{}".cyan()
+            )),
+            ("user", Some(user)) => Some(format!(
+                "  {} add user '{}' to a matcher in {} or add one fallback profile with {}",
+                "hint:".dimmed(),
+                user.cyan(),
+                "rb.profile.define(...)".cyan(),
+                "{}".cyan()
+            )),
+            ("command", _) => Some(format!(
+                "  {} add an installed command/path matcher in {} or add one fallback profile with {}",
+                "hint:".dimmed(),
+                "rb.profile.define(...)".cyan(),
+                "{}".cyan()
+            )),
+            _ => Some(format!(
+                "  {} adjust the '{}' strategy matchers in {}",
+                "hint:".dimmed(),
+                strategy.cyan(),
+                "rb.profile.define(...)".cyan()
+            )),
+        },
         _ => None,
+    }
+}
+
+fn append_profile_suggestion(out: &mut String, name: &str, profiles: &[String]) {
+    if let Some(suggestion) = closest_match(name, profiles) {
+        out.push_str(&format!(" (did you mean '{}'?)", suggestion.cyan()));
     }
 }
 
@@ -212,4 +289,56 @@ fn levenshtein(a: &str, b: &str) -> usize {
         std::mem::swap(&mut prev, &mut curr);
     }
     prev[b.len()]
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn profiles(names: &[&str]) -> Vec<String> {
+        names.iter().map(|name| (*name).to_string()).collect()
+    }
+
+    #[test]
+    fn hostname_no_match_hint_matches_hostname_strategy() {
+        let hint = profile_hint(&ProfileError::NoMatch {
+            strategy: "hostname",
+            value: Some("work-mbp".to_string()),
+            profiles: profiles(&["personal"]),
+        })
+        .expect("expected hint");
+
+        assert!(hint.contains("hostname"));
+        assert!(hint.contains("work-mbp"));
+        assert!(!hint.contains("ctx.cli"));
+        assert!(!hint.contains("--profile"));
+    }
+
+    #[test]
+    fn reference_hint_does_not_suggest_cli_profile_flag() {
+        let hint = profile_hint(&ProfileError::Required {
+            context: ProfileErrorContext::Reference("rb.profile.when"),
+            active: Some("work".to_string()),
+            profiles: profiles(&["personal"]),
+        })
+        .expect("expected hint");
+
+        assert!(hint.contains("rb.profile.when"));
+        assert!(hint.contains("rb.profile.define"));
+        assert!(!hint.contains("rb apply --profile"));
+    }
+
+    #[test]
+    fn cli_unknown_hint_mentions_declaring_or_passing_known_profile() {
+        let hint = profile_hint(&ProfileError::Required {
+            context: ProfileErrorContext::Cli,
+            active: Some("work".to_string()),
+            profiles: profiles(&["personal"]),
+        })
+        .expect("expected hint");
+
+        assert!(hint.contains("add profile"));
+        assert!(hint.contains("rb.profile.define"));
+        assert!(hint.contains("rb apply --profile <personal>"));
+    }
 }

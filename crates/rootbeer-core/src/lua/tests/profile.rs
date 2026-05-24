@@ -5,7 +5,7 @@ use std::path::Path;
 
 use crate::lua::test_support::{drain, vm_in_with_profile};
 use crate::plan::Op;
-use crate::profile::{self, NameError, ProfileError};
+use crate::profile::{self, NameError, ProfileError, ProfileErrorContext};
 
 /// Run a snippet against a fresh VM, returning either the planned ops or
 /// the structured `ProfileError` raised during exec.
@@ -184,16 +184,21 @@ fn rejects_default_as_profile_name() {
 
 #[test]
 fn cli_strategy_without_flag_errors() {
-    assert!(matches!(
-        err(
-            r#"rb.profile.define({
-                strategy = "cli",
-                profiles = { work = {}, personal = {} },
-            })"#,
-            None,
-        ),
-        ProfileError::Required { active: None, .. }
-    ));
+    match err(
+        r#"rb.profile.define({
+            strategy = "cli",
+            profiles = { work = {}, personal = {} },
+        })"#,
+        None,
+    ) {
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Cli);
+            assert_eq!(active, None);
+        }
+        other => panic!("unexpected: {other:?}"),
+    }
 }
 
 #[test]
@@ -239,7 +244,12 @@ fn cli_strategy_validates_flag_against_schema() {
         })"#,
         Some("wrok"),
     ) {
-        ProfileError::Required { active, .. } => assert_eq!(active.as_deref(), Some("wrok")),
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Cli);
+            assert_eq!(active.as_deref(), Some("wrok"));
+        }
         other => panic!("unexpected: {other:?}"),
     }
 }
@@ -483,7 +493,12 @@ fn function_strategy_validates_returned_name() {
         })"#,
         None,
     ) {
-        ProfileError::Required { active, .. } => assert_eq!(active.as_deref(), Some("wrok")),
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Strategy);
+            assert_eq!(active.as_deref(), Some("wrok"));
+        }
         other => panic!("unexpected: {other:?}"),
     }
 }
@@ -539,7 +554,12 @@ fn ctx_cli_validates_flag_when_used() {
         })"#,
         Some("wrok"),
     ) {
-        ProfileError::Required { active, .. } => assert_eq!(active.as_deref(), Some("wrok")),
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Cli);
+            assert_eq!(active.as_deref(), Some("wrok"));
+        }
         other => panic!("unexpected: {other:?}"),
     }
 }
@@ -608,7 +628,12 @@ fn select_validates_keys_against_schema() {
         "#,
         Some("work"),
     ) {
-        ProfileError::Required { active, .. } => assert_eq!(active.as_deref(), Some("wrok")),
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Reference("rb.profile.select"));
+            assert_eq!(active.as_deref(), Some("wrok"));
+        }
         other => panic!("unexpected: {other:?}"),
     }
 }
@@ -637,9 +662,30 @@ fn when_validates_name_against_schema() {
         "#,
         Some("work"),
     ) {
-        ProfileError::Required { active, .. } => assert_eq!(active.as_deref(), Some("wrok")),
+        ProfileError::Required {
+            context, active, ..
+        } => {
+            assert_eq!(context, ProfileErrorContext::Reference("rb.profile.when"));
+            assert_eq!(active.as_deref(), Some("wrok"));
+        }
         other => panic!("unexpected: {other:?}"),
     }
+}
+
+#[test]
+fn profile_reference_error_identifies_call_site() {
+    let error = err(
+        r#"
+        rb.profile.define({ strategy = "cli", profiles = { personal = {} } })
+        rb.profile.when("work", function() end)
+        "#,
+        Some("personal"),
+    );
+
+    assert_eq!(
+        error.to_string(),
+        "rb.profile.when references unknown profile 'work', expected one of: personal"
+    );
 }
 
 #[test]

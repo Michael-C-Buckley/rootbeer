@@ -6,7 +6,7 @@
 --- @class rootbeer.HostInfo
 --- @field os string The operating system (e.g. `"macos"`, `"linux"`).
 --- @field arch string CPU architecture (e.g. `"aarch64"`, `"x86_64"`).
---- @field hostname? string Machine hostname, or `nil` if it cannot be determined.
---- @field user string Current username (from passwd).
+--- @field hostname? string Machine hostname, or `nil` if it cannot be determined (respects `HOSTNAME` env var if set).
+--- @field user string Current username (from passwd, respects `USER` env var if set).
 --- @field home string Home directory path (from passwd).
 --- @field shell string Default login shell (from passwd, e.g. `"/bin/zsh"`).
