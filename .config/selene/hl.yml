@@ -1,0 +1,6 @@
+---
+base: lua51
+name: hl
+globals:
+  hl:
+    any: true

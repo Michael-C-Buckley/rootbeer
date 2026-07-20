@@ -1,0 +1,7 @@
+---
+extends: default
+
+ignore: |-
+  .sops.yaml
+  hosts/*/secrets/*
+  modules/nixos/secrets/*

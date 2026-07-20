@@ -1,0 +1,8 @@
+vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
+require("mini.icons").setup()
+require("mini.tabline").setup()
+require("mini.statusline").setup()
+require("mini.cursorword").setup()
+require("mini.notify").setup()
+require("mini.starter").setup()
+require("mini.comment").setup()

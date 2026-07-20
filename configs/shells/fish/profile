@@ -1,0 +1,3 @@
+case $- in
+  *i*) [ -z "$NO_FISH" ] && [ -z "$FISH_VERSION" ] && [ -x /usr/bin/fish ] && exec fish ;;
+esac
