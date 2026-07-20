@@ -1,0 +1,35 @@
+excludes = ["*.lock", ".gitignore"]
+on-unmatched = "warn"
+
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.biome]
+command = "biome"
+includes = ["*.json", "*.jsonc"]
+excludes = ["configs/editor/zed/settings.json"] # False positive
+options = [
+  "format",
+  "--no-errors-on-unmatched",
+  "--use-editorconfig=true",
+  "--write",
+]
+
+[formatter.mdformat]
+command = "mdformat"
+includes = ["*.md"]
+
+[formatter.taplo]
+command = "taplo"
+includes = ["*.toml"]
+options = ["format"]
+
+[formatter.yamlfmt]
+command = "yamlfmt"
+options = ["-conf", ".config/yamlfmt.yaml"]
+includes = ["*.yaml", "*.yml"]
+
+[formatter.stylua]
+command = "stylua"
+includes = ["*.lua"]

@@ -1,0 +1,3 @@
+[type.vsix]
+extend-glob = ["*.vsix"]
+check-file = false

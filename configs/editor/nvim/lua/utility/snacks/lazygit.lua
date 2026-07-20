@@ -1,0 +1,6 @@
+vim.keymap.set("n", "<leader>gg", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>gf", function()
+  Snacks.lazygit.log_file()
+end, { desc = "Lazygit file log" })

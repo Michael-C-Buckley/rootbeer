@@ -1,0 +1,76 @@
+{
+  "helix_mode": true,
+  "remove_trailing_whitespace_on_save": true,
+  "format_on_save": "off",
+  "agent_buffer_font_size": 16.0,
+  "agent_ui_font_size": 15.0,
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)",
+  },
+  "buffer_font_weight": 500,
+  "diagnostics": { "inline": { "enabled": true, "min_column": 80 } },
+  "git": { "git_gutter": "tracked_files" },
+  "auto_install_extensions": {
+    "html": true,
+    "lua": true,
+    "nix": true,
+    "toml": true,
+  },
+  "languages": {
+    "YAML": {
+      "format_on_save": "off",
+    },
+    "JSON": {
+      "formatter": {
+        "external": {
+          "arguments": ["format", "--stdin-file-path", "{buffer_path}"],
+          "command": "biome",
+        },
+      },
+    },
+    "Nix": {
+      "formatter": {
+        "external": { "arguments": ["--quiet", "--"], "command": "alejandra" },
+      },
+      "language_servers": ["nixd"],
+    },
+  },
+  "vim_mode": false,
+  "vim": {
+    "toggle_relative_line_numbers": true,
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "outline_panel": {
+    "dock": "left",
+  },
+  "collaboration_panel": {
+    "dock": "left",
+  },
+  "tabs": { "file_icons": true, "git_status": true, "show_diagnostics": "all" },
+  "telemetry": { "diagnostics": false, "metrics": false },
+  "toolbar": { "code_actions": true },
+  "agent": {
+    "default_model": {
+      "provider": "openrouter",
+      "model": "openai/gpt-oss-120b:free",
+      "enable_thinking": true
+    },
+    "default_profile": "ask",
+    "dock": "right",
+    "model_parameters": [],
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "ui_font_size": 16.0,
+  "buffer_font_size": 15.0,
+  "theme": {
+    "mode": "dark",
+    "light": "Ayu Light",
+    "dark": "Ayu Dark",
+  },
+}
