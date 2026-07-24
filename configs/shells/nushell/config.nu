@@ -247,53 +247,48 @@ def --wrapped rb [...args] {
 
 # ── Completions ────────────────────────────────────────────────────────────────
 
+let fish_completer = {|spans|
+    fish --command $'complete "--do-complete=($spans | str join " ")"'
+    | from tsv --flexible --no-infer
+}
+
 let carapace_completer = {|spans: list<string>|
-    carapace $spans.0 nushell ...$spans | from json
+    CARAPACE_LENIENT=1 carapace $spans.0 nushell ...$spans | from json
 }
 
-# File-path completer as a fallback for when carapace returns nothing
-let file_completer = {|spans: list<string>|
-    let prefix = $spans | last
-    ls ($prefix ++ "*")
-    | each { |entry|
-        let is_dir = ($entry.type == "dir")
-        {
-            value: (if $is_dir { $entry.name ++ "/" } else { $entry.name })
-            description: $entry.type
+let external_completer = {|spans|
+    let expanded_alias = (scope aliases | where name == $spans.0 | get -o 0.expansion)
+    let spans = if $expanded_alias != null {
+        $spans | skip 1 | prepend ($expanded_alias | split row ' ' | take 1)
+    } else {
+        $spans
+    }
+
+    match $spans.0 {
+        # fish wins outright for these
+        nu => $fish_completer
+        git => $fish_completer
+        asdf => $fish_completer
+        # everything else: try carapace, fall back to fish if it's empty
+        _ => {|s|
+            let result = (do $carapace_completer $s)
+            if ($result | is-empty) {
+                do $fish_completer $s
+            } else {
+                $result
+            }
         }
-    }
-    | sort-by value
+    } | do $in $spans
 }
 
-# SSH host aliases are not provided by carapace, so complete them directly.
-let ssh_completer = {|spans: list<string>|
-    let command = ($spans | first | path basename)
-    let current = ($spans | last)
-
-    if $command == "ssh" and not ($current | str starts-with "-") {
-        ssh-config-hosts
-        | each { |host| { value: $host, description: "SSH host" } }
-    } else {
-        []
-    }
-}
-
-# Multi-completer: handles SSH hosts, then tries carapace and file completion.
-let multi_completer = {|spans: list<string>|
-    let ssh_result = do $ssh_completer $spans
-    if ($ssh_result | is-not-empty) {
-        $ssh_result
-    } else {
-        let carapace_result = do $carapace_completer $spans
-        if ($carapace_result | is-not-empty) {
-            $carapace_result
-        } else {
-            do $file_completer $spans
+$env.config = {
+    completions: {
+        external: {
+            enable: true
+            completer: $external_completer
         }
     }
 }
-
-$env.config.completions.external.completer = $multi_completer
 
 #source-env ($config_dir | path join "prompt.nu")
 source-env ($config_dir | path join "starship.nu")
