@@ -83,6 +83,27 @@ $env.config = {
 
     keybindings: [
         {
+            name: fzf_history
+            modifier: control
+            keycode: char_r
+            mode: [emacs, vi_insert]
+            event: { send: executehostcommand cmd: "fzf-history" }
+        }
+        {
+            name: fzf_file
+            modifier: control
+            keycode: char_t
+            mode: [emacs, vi_insert]
+            event: { send: executehostcommand cmd: "fzf-file" }
+        }
+        {
+            name: fzf_cd
+            modifier: alt
+            keycode: char_c
+            mode: [emacs, vi_insert]
+            event: { send: executehostcommand cmd: "fcd" }
+        }
+        {
             # currently kitty sends this for backspace, but h also works and is agreeable
             name: backspace_kill_word
             modifier: control
@@ -112,6 +133,59 @@ if $nu.os-info.name == "macos" {
 
 # ── Useful Custom Commands ────────────────────────────────────────────────────
 
+# Search command history with fzf and replace the current command line.
+def fzf-history [] {
+    if (which fzf | is-empty) {
+        return
+    }
+
+    let selection = (
+        history
+        | get command
+        | uniq
+        | reverse
+        | str join (char nl)
+        | ^fzf --height 60% --reverse --border --query (commandline) --prompt "history> "
+        | str trim
+    )
+
+    if $selection != "" {
+        commandline edit --replace $selection
+    }
+}
+
+# Insert a file selected with fzf at the current command-line cursor position.
+def fzf-file [] {
+    if (which fd | is-empty) or (which fzf | is-empty) {
+        return
+    }
+
+    let buffer_before_cursor = (commandline | str substring 0..<(commandline get-cursor))
+    let git_add_context = ($buffer_before_cursor =~ '^\s*git\s+add(?:\s|$)')
+    let file = if $git_add_context {
+        let git_diff_preview = if (which delta | is-not-empty) {
+            "git diff --color=always -- {} | delta --dark --color-only"
+        } else {
+            "git diff --color=always -- {}"
+        }
+        (
+            ^git ls-files -m -d -o --exclude-standard
+            | ^fzf --height 60% --reverse --border --prompt "git add> " --preview $git_diff_preview --preview-window "right:60%:wrap"
+            | str trim
+        )
+    } else {
+        (
+            ^fd --type f --hidden --follow --exclude .git .
+            | ^fzf --height 60% --reverse --border --prompt "file> " --preview "bat --color=always --style=numbers --line-range=:500 -- {} 2>/dev/null" --preview-window "right:60%:wrap"
+            | str trim
+        )
+    }
+
+    if $file != "" {
+        commandline edit --insert ($file | to nuon)
+    }
+}
+
 # Find files by name
 def ff [pattern: string] {
     ls **/*
@@ -140,9 +214,19 @@ def pg [pattern: string] {
 
 # Find a file or directory and cd to it
 def --env fcd [] {
-    let selection = (fd | fzf --height 40% --reverse)
+    if (which fd | is-empty) or (which fzf | is-empty) {
+        return
+    }
+
+    let selection = (^fd . | ^fzf --height 40% --reverse)
     if $selection != "" {
-        cd ($selection | path expand | path dirname)
+        let selected_path = ($selection | path expand)
+        let destination = if (($selected_path | path type) == "dir") {
+            $selected_path
+        } else {
+            $selected_path | path dirname
+        }
+        cd $destination
     }
 }
 
