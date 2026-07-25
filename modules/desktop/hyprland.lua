@@ -12,7 +12,6 @@ for _, name in ipairs(files) do
 end
 
 optional.link_files_when_binary({ "Hyprland", "hyprland" }, links)
-optional.link_files_when_binary({ "Hyprland", "hyprland" }, links)
 
 optional.when_binary("dms", function()
   rb.copy_file(
