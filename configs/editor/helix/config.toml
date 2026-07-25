@@ -1,6 +1,7 @@
 theme = "ayu_evolve"
 
 [editor]
+auto-format = false
 bufferline = "multiple"
 cursorline = true
 end-of-line-diagnostics = "hint"
