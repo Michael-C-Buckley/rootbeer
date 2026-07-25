@@ -22,9 +22,6 @@
       alejandra
       nil
       nixd
-      # Rust
-      rust-analyzer
-      rustfmt
       # Python
       ruff
       basedpyright
