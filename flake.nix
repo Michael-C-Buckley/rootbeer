@@ -12,8 +12,11 @@
       }
     );
     packages = forAllSystems (
-      system: {
-        nushell = import ./nix/nushell.nix {pkgs = p.${system};};
+      system: let
+        pkgs = p.${system};
+      in {
+        nushell = import ./nix/nushell.nix {inherit pkgs;};
+        helix = import ./nix/helix.nix {inherit pkgs;};
       }
     );
   };

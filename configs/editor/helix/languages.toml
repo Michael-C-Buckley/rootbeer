@@ -1,12 +1,10 @@
 [[language]]
-auto-format = false
 name = "nix"
 
 [language.formatter]
 command = "alejandra"
 
 [[language]]
-auto-format = false
 language-servers = ["json"]
 name = "json"
 
@@ -15,7 +13,6 @@ args = ["format", "--stdin-file-path", "%file"]
 command = "biome"
 
 [[language]]
-auto-format = false
 language-servers = ["basedpyright", "ruff"]
 name = "python"
 
