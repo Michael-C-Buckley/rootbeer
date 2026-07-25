@@ -36,6 +36,7 @@ if (which starship | is-empty) {
 
 # Base abbreviations, always available
 $env.config.abbreviations = {
+    fg:     "job unfreeze"
     cl:     "clear"
     fenv:   "$env"                  # nu equivalent of fish's `set --show`
     nv:     "nvim"
