@@ -1,4 +1,4 @@
-local apps = { "helix", "zed" }
+local apps = { "zed" }
 local desktop = { "hyprland", "oxwm" }
 local terminals = { "kitty" }
 
