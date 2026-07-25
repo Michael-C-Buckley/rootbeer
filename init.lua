@@ -33,13 +33,15 @@ end
 
 if rb.host.os == "macos" then
   require("modules.terminals.ghostty")
-  require("modules.apps.nvim")
-  require("modules.presets.shells")
   require("modules.apps.helix")
+  require("modules.apps.nvim")
+  require("modules.shells.fish")
+  require("modules.shells.starship")
 end
 
 if rb.host.os == "linux" then
   -- Import shells unconditionally as they're detected
-  require("modules.presets.shells")
+  require("modules.shells.fish")
+  require("modules.shells.starship")
   host_import(rb.host.hostname)
 end

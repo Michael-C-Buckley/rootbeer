@@ -11,5 +11,10 @@
         default = import ./shell.nix {pkgs = p.${system};};
       }
     );
+    packages = forAllSystems (
+      system: {
+        nushell = import ./nix/nushell.nix {pkgs = p.${system};};
+      }
+    );
   };
 }
