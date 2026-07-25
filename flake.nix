@@ -12,12 +12,11 @@
       }
     );
     packages = forAllSystems (
-      system: let
-        pkgs = p.${system};
-      in {
-        nushell = import ./nix/nushell.nix {inherit pkgs;};
-        helix = import ./nix/helix.nix {inherit pkgs;};
-      }
+      system:
+        builtins.listToAttrs (map (n: {
+          name = n;
+          value = import ./nix/${n}.nix {pkgs = p.${system};};
+        }) ["nushell" "helix" "kitty"])
     );
   };
 }
