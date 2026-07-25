@@ -8,7 +8,7 @@
   in {
     devShells = forAllSystems (
       system: {
-        default = import ./shell.nix {pkgs = p.${system};};
+        default = import ./nix/shell.nix {pkgs = p.${system};};
       }
     );
     packages = forAllSystems (
