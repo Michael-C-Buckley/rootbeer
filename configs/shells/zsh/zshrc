@@ -109,11 +109,48 @@ if (( $+commands[fzf] )) &&
 	zstyle ':fzf-tab:*' switch-group '<' '>'
 fi
 
+# Use command-aware completion when a command is present; otherwise retain
+# Ctrl-T's generic file picker.
+_fzf_context_widget() {
+	if [[ -n "${LBUFFER//[[:space:]]/}" ]] &&
+	   (( $+widgets[fzf-tab-complete] )); then
+		zle fzf-tab-complete
+	elif (( $+widgets[fzf-file-widget] )); then
+		zle fzf-file-widget
+	else
+		zle redisplay
+	fi
+}
+
+if (( $+widgets[fzf-tab-complete] || $+widgets[fzf-file-widget] )); then
+	zle -N _fzf_context_widget
+	bindkey '^T' _fzf_context_widget
+fi
+
 # Expand shorthands on Space or Enter so history contains the full command.
 if [[ -n "$_zsh_brew_prefix" &&
       -r "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh" ]]; then
 	ABBR_USER_ABBREVIATIONS_FILE="$ZDOTDIR/abbreviations"
 	source "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh"
+fi
+
+# Teach zsh-syntax-highlighting that loaded abbreviations are valid commands.
+# The regexp highlighter runs before the main highlighter so its overlapping
+# region takes precedence over the unknown-command red.
+if (( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )); then
+	typeset -ga ZSH_HIGHLIGHT_HIGHLIGHTERS
+	(( ${ZSH_HIGHLIGHT_HIGHLIGHTERS[(Ie)main]} )) ||
+		ZSH_HIGHLIGHT_HIGHLIGHTERS+=(main)
+	(( ${ZSH_HIGHLIGHT_HIGHLIGHTERS[(Ie)regexp]} )) ||
+		ZSH_HIGHLIGHT_HIGHLIGHTERS=(regexp $ZSH_HIGHLIGHT_HIGHLIGHTERS)
+
+	typeset -gA ZSH_HIGHLIGHT_REGEXP
+	typeset -g _zsh_abbr_highlight_pattern
+	_zsh_abbr_highlight_pattern='^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$'
+	ZSH_HIGHLIGHT_REGEXP+=(
+		"$_zsh_abbr_highlight_pattern" 'fg=green'
+	)
+	unset _zsh_abbr_highlight_pattern
 fi
 
 if [[ -n "$_zsh_brew_prefix" &&
