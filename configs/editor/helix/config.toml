@@ -20,6 +20,7 @@ hidden = false
 [editor.indent-guides]
 character = "."
 render = true
+skip_levels = 1
 
 [editor.inline-diagnostics]
 cursor-line = "error"
