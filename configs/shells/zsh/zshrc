@@ -33,29 +33,102 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='(ls|ls *)'
 
-# Homebrew owns the interactive zsh plugins. This avoids embedding Nix store
-# paths in the config and also works in a non-login shell that skips .zprofile.
-typeset -g _zsh_brew_prefix=''
-for _zsh_prefix_candidate in "${HOMEBREW_PREFIX:-}" /opt/homebrew /usr/local; do
-	if [[ -n "$_zsh_prefix_candidate" &&
-	      -d "$_zsh_prefix_candidate/share" ]]; then
-		_zsh_brew_prefix="$_zsh_prefix_candidate"
-		break
-	fi
+# Keep plugin ownership explicit and overridable. Homebrew owns plugins on
+# macOS; Linux expects them in a Nix profile. An unknown provider simply leaves
+# the optional integrations disabled.
+typeset -g ZSH_PLUGIN_PROVIDER="${ZSH_PLUGIN_PROVIDER:-}"
+if [[ -z "$ZSH_PLUGIN_PROVIDER" ]]; then
+	case "$OSTYPE" in
+		darwin*) ZSH_PLUGIN_PROVIDER=homebrew ;;
+		linux*)  ZSH_PLUGIN_PROVIDER=nix ;;
+		*)       ZSH_PLUGIN_PROVIDER=none ;;
+	esac
+fi
+
+typeset -ga _zsh_plugin_share_roots
+_zsh_plugin_share_roots=()
+
+case "$ZSH_PLUGIN_PROVIDER" in
+	homebrew)
+		typeset -g _zsh_brew_prefix=''
+		for _zsh_prefix_candidate in "${HOMEBREW_PREFIX:-}" /opt/homebrew /usr/local; do
+			if [[ -n "$_zsh_prefix_candidate" &&
+			      -d "$_zsh_prefix_candidate/share" ]]; then
+				_zsh_brew_prefix="$_zsh_prefix_candidate"
+				_zsh_plugin_share_roots=("$_zsh_brew_prefix/share")
+				break
+			fi
+		done
+		unset _zsh_prefix_candidate
+		;;
+	nix)
+		for _zsh_share_candidate in \
+			"${NIX_PROFILE:+$NIX_PROFILE/share}" \
+			"$HOME/.nix-profile/share" \
+			"${USER:+/etc/profiles/per-user/$USER/share}" \
+			/run/current-system/sw/share \
+			/nix/var/nix/profiles/default/share
+		do
+			if [[ -n "$_zsh_share_candidate" &&
+			      -d "$_zsh_share_candidate" ]]; then
+				_zsh_plugin_share_roots+=("$_zsh_share_candidate")
+			fi
+		done
+		unset _zsh_share_candidate
+		;;
+esac
+
+typeset -U _zsh_plugin_share_roots
+
+_zsh_find_plugin_file() {
+	local _zsh_share_root _zsh_relative_path
+	for _zsh_share_root in "$_zsh_plugin_share_roots[@]"; do
+		for _zsh_relative_path in "$@"; do
+			if [[ -r "$_zsh_share_root/$_zsh_relative_path" ]]; then
+				REPLY="$_zsh_share_root/$_zsh_relative_path"
+				return 0
+			fi
+		done
+	done
+	REPLY=''
+	return 1
+}
+
+typeset -g _zsh_fzf_tab_file=''
+typeset -g _zsh_abbr_file=''
+typeset -g _zsh_autosuggestions_file=''
+typeset -g _zsh_transient_prompt_file=''
+typeset -g _zsh_syntax_highlighting_file=''
+
+_zsh_find_plugin_file fzf-tab/fzf-tab.zsh &&
+	_zsh_fzf_tab_file="$REPLY"
+_zsh_find_plugin_file \
+	zsh-abbr/zsh-abbr.zsh \
+	zsh/zsh-abbr/zsh-abbr.zsh &&
+	_zsh_abbr_file="$REPLY"
+_zsh_find_plugin_file zsh-autosuggestions/zsh-autosuggestions.zsh &&
+	_zsh_autosuggestions_file="$REPLY"
+_zsh_find_plugin_file zsh-transient-prompt/transient-prompt.zsh-theme &&
+	_zsh_transient_prompt_file="$REPLY"
+_zsh_find_plugin_file zsh-syntax-highlighting/zsh-syntax-highlighting.zsh &&
+	_zsh_syntax_highlighting_file="$REPLY"
+
+# Completion directories must be added to fpath before compinit. Nix profiles
+# merge package completions into zsh/site-functions; Homebrew formulas may use
+# either that standard location or a package-specific share directory.
+for _zsh_share_root in "$_zsh_plugin_share_roots[@]"; do
+	for _zsh_completion_dir in \
+		"$_zsh_share_root/zsh/site-functions" \
+		"$_zsh_share_root/zsh-completions" \
+		"$_zsh_share_root/zsh-abbr" \
+		"$_zsh_share_root/zsh/zsh-abbr"
+	do
+		[[ -d "$_zsh_completion_dir" ]] &&
+			fpath=("$_zsh_completion_dir" $fpath)
+	done
 done
-unset _zsh_prefix_candidate
-
-# zsh-completions must be added to fpath before compinit.
-if [[ -n "$_zsh_brew_prefix" &&
-      -d "$_zsh_brew_prefix/share/zsh-completions" ]]; then
-	fpath=("$_zsh_brew_prefix/share/zsh-completions" $fpath)
-fi
-
-# Add completion for the abbreviation manager itself.
-if [[ -n "$_zsh_brew_prefix" &&
-      -d "$_zsh_brew_prefix/share/zsh-abbr" ]]; then
-	fpath=("$_zsh_brew_prefix/share/zsh-abbr" $fpath)
-fi
+typeset -U fpath
+unset _zsh_share_root _zsh_completion_dir
 
 zmodload zsh/complist
 bindkey -M menuselect 'h' vi-backward-char
@@ -102,9 +175,8 @@ fi
 
 # fzf-tab must load after compinit and fzf, but before autosuggestions.
 if (( $+commands[fzf] )) &&
-   [[ -n "$_zsh_brew_prefix" &&
-      -r "$_zsh_brew_prefix/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
-	source "$_zsh_brew_prefix/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+   [[ -n "$_zsh_fzf_tab_file" ]]; then
+	source "$_zsh_fzf_tab_file"
 	zstyle ':fzf-tab:*' fzf-flags --height=60% --layout=reverse --border
 	zstyle ':fzf-tab:*' switch-group '<' '>'
 fi
@@ -128,10 +200,9 @@ if (( $+widgets[fzf-tab-complete] || $+widgets[fzf-file-widget] )); then
 fi
 
 # Expand shorthands on Space or Enter so history contains the full command.
-if [[ -n "$_zsh_brew_prefix" &&
-      -r "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh" ]]; then
+if [[ -n "$_zsh_abbr_file" ]]; then
 	ABBR_USER_ABBREVIATIONS_FILE="$ZDOTDIR/abbreviations"
-	source "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh"
+	source "$_zsh_abbr_file"
 fi
 
 # Teach zsh-syntax-highlighting that loaded abbreviations are valid commands.
@@ -153,11 +224,10 @@ if (( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )); then
 	unset _zsh_abbr_highlight_pattern
 fi
 
-if [[ -n "$_zsh_brew_prefix" &&
-      -r "$_zsh_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+if [[ -n "$_zsh_autosuggestions_file" ]]; then
 	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-	source "$_zsh_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+	source "$_zsh_autosuggestions_file"
 fi
 
 if (( $+commands[zoxide] )); then
@@ -178,13 +248,12 @@ fi
 # Collapse completed Starship prompts to the same dim character used by the
 # Fish transient prompt. The current prompt remains the full Starship prompt.
 if [[ "${STARSHIP_SHELL:-}" == zsh &&
-      -n "$_zsh_brew_prefix" &&
-      -r "$_zsh_brew_prefix/share/zsh-transient-prompt/transient-prompt.zsh-theme" ]]; then
+      -n "$_zsh_transient_prompt_file" ]]; then
 	TRANSIENT_PROMPT_PROMPT=$PROMPT
 	TRANSIENT_PROMPT_RPROMPT=$RPROMPT
 	TRANSIENT_PROMPT_TRANSIENT_PROMPT='%F{8}❯%f '
 	TRANSIENT_PROMPT_TRANSIENT_RPROMPT=''
-	source "$_zsh_brew_prefix/share/zsh-transient-prompt/transient-prompt.zsh-theme"
+	source "$_zsh_transient_prompt_file"
 fi
 
 killdns() {
@@ -193,9 +262,15 @@ killdns() {
 }
 
 # Syntax highlighting needs to be sourced after every other ZLE integration.
-if [[ -n "$_zsh_brew_prefix" &&
-      -r "$_zsh_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-	source "$_zsh_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if [[ -n "$_zsh_syntax_highlighting_file" ]]; then
+	source "$_zsh_syntax_highlighting_file"
 fi
 
+unfunction _zsh_find_plugin_file
 unset _zsh_brew_prefix
+unset _zsh_plugin_share_roots
+unset _zsh_fzf_tab_file
+unset _zsh_abbr_file
+unset _zsh_autosuggestions_file
+unset _zsh_transient_prompt_file
+unset _zsh_syntax_highlighting_file
