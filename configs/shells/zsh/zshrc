@@ -33,50 +33,42 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='(ls|ls *)'
 
-# Keep plugin ownership explicit and overridable. Homebrew owns plugins on
-# macOS; Linux expects them in a Nix profile. An unknown provider simply leaves
-# the optional integrations disabled.
-typeset -g ZSH_PLUGIN_PROVIDER="${ZSH_PLUGIN_PROVIDER:-}"
-if [[ -z "$ZSH_PLUGIN_PROVIDER" ]]; then
-	case "$OSTYPE" in
-		darwin*) ZSH_PLUGIN_PROVIDER=homebrew ;;
-		linux*)  ZSH_PLUGIN_PROVIDER=nix ;;
-		*)       ZSH_PLUGIN_PROVIDER=none ;;
-	esac
-fi
-
+# Search both package managers by default. This also supports Nix on macOS and
+# Homebrew on Linux; ZSH_PLUGIN_PROVIDER can constrain discovery when desired.
+typeset -g ZSH_PLUGIN_PROVIDER="${ZSH_PLUGIN_PROVIDER:-auto}"
 typeset -ga _zsh_plugin_share_roots
 _zsh_plugin_share_roots=()
 
-case "$ZSH_PLUGIN_PROVIDER" in
-	homebrew)
-		typeset -g _zsh_brew_prefix=''
-		for _zsh_prefix_candidate in "${HOMEBREW_PREFIX:-}" /opt/homebrew /usr/local; do
-			if [[ -n "$_zsh_prefix_candidate" &&
-			      -d "$_zsh_prefix_candidate/share" ]]; then
-				_zsh_brew_prefix="$_zsh_prefix_candidate"
-				_zsh_plugin_share_roots=("$_zsh_brew_prefix/share")
-				break
-			fi
-		done
-		unset _zsh_prefix_candidate
-		;;
-	nix)
-		for _zsh_share_candidate in \
-			"${NIX_PROFILE:+$NIX_PROFILE/share}" \
-			"$HOME/.nix-profile/share" \
-			"${USER:+/etc/profiles/per-user/$USER/share}" \
-			/run/current-system/sw/share \
-			/nix/var/nix/profiles/default/share
-		do
-			if [[ -n "$_zsh_share_candidate" &&
-			      -d "$_zsh_share_candidate" ]]; then
-				_zsh_plugin_share_roots+=("$_zsh_share_candidate")
-			fi
-		done
-		unset _zsh_share_candidate
-		;;
-esac
+if [[ "$ZSH_PLUGIN_PROVIDER" == auto ||
+      "$ZSH_PLUGIN_PROVIDER" == homebrew ]]; then
+	typeset -g _zsh_brew_prefix=''
+	for _zsh_prefix_candidate in "${HOMEBREW_PREFIX:-}" /opt/homebrew /usr/local; do
+		if [[ -n "$_zsh_prefix_candidate" &&
+		      -d "$_zsh_prefix_candidate/share" ]]; then
+			_zsh_brew_prefix="$_zsh_prefix_candidate"
+			_zsh_plugin_share_roots+=("$_zsh_brew_prefix/share")
+			break
+		fi
+	done
+	unset _zsh_prefix_candidate
+fi
+
+if [[ "$ZSH_PLUGIN_PROVIDER" == auto ||
+      "$ZSH_PLUGIN_PROVIDER" == nix ]]; then
+	for _zsh_share_candidate in \
+		"${NIX_PROFILE:+$NIX_PROFILE/share}" \
+		"$HOME/.nix-profile/share" \
+		"${USER:+/etc/profiles/per-user/$USER/share}" \
+		/run/current-system/sw/share \
+		/nix/var/nix/profiles/default/share
+	do
+		if [[ -n "$_zsh_share_candidate" &&
+		      -d "$_zsh_share_candidate" ]]; then
+			_zsh_plugin_share_roots+=("$_zsh_share_candidate")
+		fi
+	done
+	unset _zsh_share_candidate
+fi
 
 typeset -U _zsh_plugin_share_roots
 
@@ -99,19 +91,37 @@ typeset -g _zsh_abbr_file=''
 typeset -g _zsh_autosuggestions_file=''
 typeset -g _zsh_transient_prompt_file=''
 typeset -g _zsh_syntax_highlighting_file=''
+typeset -ga _zsh_plugin_completion_dirs
+_zsh_plugin_completion_dirs=()
 
-_zsh_find_plugin_file fzf-tab/fzf-tab.zsh &&
+# Nix deployments provide exact store paths here. Other systems fall through
+# to profile/Homebrew discovery below.
+typeset _zsh_plugin_paths_file="${ZSH_PLUGIN_PATHS_FILE:-$ZDOTDIR/plugin-paths.zsh}"
+[[ -r "$_zsh_plugin_paths_file" ]] && source "$_zsh_plugin_paths_file"
+unset _zsh_plugin_paths_file
+
+if [[ -z "$_zsh_fzf_tab_file" ]] &&
+   _zsh_find_plugin_file fzf-tab/fzf-tab.zsh; then
 	_zsh_fzf_tab_file="$REPLY"
-_zsh_find_plugin_file \
+fi
+if [[ -z "$_zsh_abbr_file" ]] && _zsh_find_plugin_file \
 	zsh-abbr/zsh-abbr.zsh \
-	zsh/zsh-abbr/zsh-abbr.zsh &&
+	zsh/zsh-abbr/zsh-abbr.zsh; then
 	_zsh_abbr_file="$REPLY"
-_zsh_find_plugin_file zsh-autosuggestions/zsh-autosuggestions.zsh &&
+fi
+if [[ -z "$_zsh_autosuggestions_file" ]] && _zsh_find_plugin_file \
+	zsh-autosuggestions/zsh-autosuggestions.zsh \
+	zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh; then
 	_zsh_autosuggestions_file="$REPLY"
-_zsh_find_plugin_file zsh-transient-prompt/transient-prompt.zsh-theme &&
+fi
+if [[ -z "$_zsh_transient_prompt_file" ]] &&
+   _zsh_find_plugin_file zsh-transient-prompt/transient-prompt.zsh-theme; then
 	_zsh_transient_prompt_file="$REPLY"
-_zsh_find_plugin_file zsh-syntax-highlighting/zsh-syntax-highlighting.zsh &&
+fi
+if [[ -z "$_zsh_syntax_highlighting_file" ]] &&
+   _zsh_find_plugin_file zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; then
 	_zsh_syntax_highlighting_file="$REPLY"
+fi
 
 # Completion directories must be added to fpath before compinit. Nix profiles
 # merge package completions into zsh/site-functions; Homebrew formulas may use
@@ -126,6 +136,10 @@ for _zsh_share_root in "$_zsh_plugin_share_roots[@]"; do
 		[[ -d "$_zsh_completion_dir" ]] &&
 			fpath=("$_zsh_completion_dir" $fpath)
 	done
+done
+for _zsh_completion_dir in "$_zsh_plugin_completion_dirs[@]"; do
+	[[ -d "$_zsh_completion_dir" ]] &&
+		fpath=("$_zsh_completion_dir" $fpath)
 done
 typeset -U fpath
 unset _zsh_share_root _zsh_completion_dir
@@ -269,6 +283,7 @@ fi
 unfunction _zsh_find_plugin_file
 unset _zsh_brew_prefix
 unset _zsh_plugin_share_roots
+unset _zsh_plugin_completion_dirs
 unset _zsh_fzf_tab_file
 unset _zsh_abbr_file
 unset _zsh_autosuggestions_file
