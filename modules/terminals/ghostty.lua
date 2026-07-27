@@ -15,7 +15,6 @@ if rb.host.os == "macos" then
 font-size = 14
 font-thicken = true
 font-thicken-strength = 255
-command = /opt/homebrew/bin/fish
 ]]
 else
   config = config .. [[

@@ -1,0 +1,164 @@
+[[ -o interactive ]] || return
+
+bindkey -e
+setopt AUTO_LIST
+setopt COMPLETE_IN_WORD
+setopt CORRECT
+setopt EXTENDED_GLOB
+
+# Starship replaces this when available. Keep a usable prompt when the command
+# is absent because a Nix or Homebrew profile was not loaded.
+PROMPT='%F{cyan}%~%f %# '
+
+# Keep command replacements as aliases. Command shorthands are declared as
+# Fish-style abbreviations in $ZDOTDIR/abbreviations.
+alias vim='nvim'
+
+if (( $+commands[eza] )); then
+	alias ls='eza --group-directories-first'
+	alias ll='eza -lah --git --icons --group-directories-first'
+	alias la='eza -la --group-directories-first'
+fi
+
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+
+HISTFILE=$ZDOTDIR/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+HISTORY_IGNORE='(ls|ls *)'
+
+# Homebrew owns the interactive zsh plugins. This avoids embedding Nix store
+# paths in the config and also works in a non-login shell that skips .zprofile.
+typeset -g _zsh_brew_prefix=''
+for _zsh_prefix_candidate in "${HOMEBREW_PREFIX:-}" /opt/homebrew /usr/local; do
+	if [[ -n "$_zsh_prefix_candidate" &&
+	      -d "$_zsh_prefix_candidate/share" ]]; then
+		_zsh_brew_prefix="$_zsh_prefix_candidate"
+		break
+	fi
+done
+unset _zsh_prefix_candidate
+
+# zsh-completions must be added to fpath before compinit.
+if [[ -n "$_zsh_brew_prefix" &&
+      -d "$_zsh_brew_prefix/share/zsh-completions" ]]; then
+	fpath=("$_zsh_brew_prefix/share/zsh-completions" $fpath)
+fi
+
+# Add completion for the abbreviation manager itself.
+if [[ -n "$_zsh_brew_prefix" &&
+      -d "$_zsh_brew_prefix/share/zsh-abbr" ]]; then
+	fpath=("$_zsh_brew_prefix/share/zsh-abbr" $fpath)
+fi
+
+zmodload zsh/complist
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+
+autoload -Uz compinit
+compinit -d "$ZDOTDIR/.zcompdump"
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompcache"
+zstyle ':completion:*:squeeze-slashes' true
+zstyle ':completion:*:*:-command-:*:*' group-order alias builtins functions commands
+zstyle ':completion:*:file-list' all
+zstyle ':completion:*:group-name' ''
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}--> %d%f'
+zstyle ':completion:*:warnings' format ' %F{red}!-> no matches found%f'
+zstyle ':completion:*:messages' format ' %F{purple}--> %d%f'
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!-> %d (errors: %e)%f'
+zstyle ':completion:*' completer _complete _approximate
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# fzf's native integration supplies Ctrl-R history, Ctrl-T files, Alt-C
+# directories, and fuzzy completion. All dependencies are optional.
+if (( $+commands[fzf] )); then
+	export FZF_DEFAULT_OPTS='--height=60% --layout=reverse --border'
+
+	if (( $+commands[fd] )); then
+		export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
+		export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+	fi
+
+	if (( $+commands[bat] )); then
+		export FZF_CTRL_T_OPTS="
+			--preview 'bat --color=always --style=numbers --line-range=:500 -- {} 2>/dev/null'
+			--preview-window 'right:60%:wrap'
+		"
+	fi
+
+	source <(fzf --zsh 2>/dev/null)
+fi
+
+# fzf-tab must load after compinit and fzf, but before autosuggestions.
+if (( $+commands[fzf] )) &&
+   [[ -n "$_zsh_brew_prefix" &&
+      -r "$_zsh_brew_prefix/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
+	source "$_zsh_brew_prefix/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+	zstyle ':fzf-tab:*' fzf-flags --height=60% --layout=reverse --border
+	zstyle ':fzf-tab:*' switch-group '<' '>'
+fi
+
+# Expand shorthands on Space or Enter so history contains the full command.
+if [[ -n "$_zsh_brew_prefix" &&
+      -r "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh" ]]; then
+	ABBR_USER_ABBREVIATIONS_FILE="$ZDOTDIR/abbreviations"
+	source "$_zsh_brew_prefix/share/zsh-abbr/zsh-abbr.zsh"
+fi
+
+if [[ -n "$_zsh_brew_prefix" &&
+      -r "$_zsh_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+	source "$_zsh_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
+if (( $+commands[zoxide] )); then
+	eval "$(zoxide init zsh --cmd z 2>/dev/null)"
+fi
+
+if (( $+commands[direnv] )); then
+	eval "$(direnv hook zsh 2>/dev/null)"
+fi
+
+if (( $+commands[starship] )); then
+	if [[ -r "$HOME/.config/starship/default.toml" ]]; then
+		export STARSHIP_CONFIG="$HOME/.config/starship/default.toml"
+	fi
+	eval "$(starship init zsh 2>/dev/null)"
+fi
+
+# Collapse completed Starship prompts to the same dim character used by the
+# Fish transient prompt. The current prompt remains the full Starship prompt.
+if [[ "${STARSHIP_SHELL:-}" == zsh &&
+      -n "$_zsh_brew_prefix" &&
+      -r "$_zsh_brew_prefix/share/zsh-transient-prompt/transient-prompt.zsh-theme" ]]; then
+	TRANSIENT_PROMPT_PROMPT=$PROMPT
+	TRANSIENT_PROMPT_RPROMPT=$RPROMPT
+	TRANSIENT_PROMPT_TRANSIENT_PROMPT='%F{8}❯%f '
+	TRANSIENT_PROMPT_TRANSIENT_RPROMPT=''
+	source "$_zsh_brew_prefix/share/zsh-transient-prompt/transient-prompt.zsh-theme"
+fi
+
+killdns() {
+	sudo dscacheutil -flushcache
+	sudo killall -HUP mDNSResponder
+}
+
+# Syntax highlighting needs to be sourced after every other ZLE integration.
+if [[ -n "$_zsh_brew_prefix" &&
+      -r "$_zsh_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+	source "$_zsh_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+
+unset _zsh_brew_prefix
