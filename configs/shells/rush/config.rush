@@ -1,0 +1,60 @@
+export EDITOR="hx"
+
+mkcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
+alias ip='ip -c'
+
+abbr .. 'cd ..'
+abbr ... 'cd ../..'
+
+event add directory.change direnv rush_direnv_hook
+
+rush_prompt_transient() {
+  if test "$?" = 0; then
+    prompt text '❯ '
+  else
+    prompt segment --fg red '❯ '
+  fi
+}
+
+rush_prompt() {
+  prompt segment --fg blue "$(prompt_pwd)"
+  prompt async git --ttl 2000 --prefix ' ' --fg yellow -- rush_prompt_git
+  prompt newline
+  prompt text '❯ '
+}
+
+rush_prompt_right() {
+  if test "$(prompt_duration)" != ""; then
+    prompt segment --dim "$(prompt_duration)"
+  fi
+}
+
+if command -v eza >/dev/null 2>&1; then
+    alias ll='eza -lah --git --icons auto'
+    alias ls='eza'
+fi
+
+if command -v git >/dev/null 2>&1; then
+    abbr g 'git'
+    abbr ga 'git add'
+    abbr gaa 'git add .'
+    abbr gs 'git status'
+    abbr gd 'git diff'
+    abbr gds 'git diff --staged'
+    abbr gl 'git log --oneline --graph --decorate'
+    abbr gp 'git pull'
+    abbr gP 'git push'
+    abbr gc 'git commit'
+    abbr gcm 'git commit -m'
+    abbr gco 'git checkout'
+    abbr gb 'git branch'
+    abbr gr 'git remote'
+    abbr grv 'git remote -'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat -p'
+fi
