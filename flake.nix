@@ -4,7 +4,11 @@
 
   outputs = {nixpkgs, ...}: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-    p = forAllSystems (system: import nixpkgs {inherit system;});
+    p = forAllSystems (system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      });
   in {
     devShells = forAllSystems (
       system: {
@@ -16,7 +20,7 @@
         builtins.listToAttrs (map (n: {
           name = n;
           value = import ./nix/${n}.nix {pkgs = p.${system};};
-        }) ["nushell" "helix" "kitty"])
+        }) ["nushell" "helix" "kitty" "zsh"])
     );
   };
 }
