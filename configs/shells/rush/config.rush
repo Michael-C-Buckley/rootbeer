@@ -1,4 +1,5 @@
 export EDITOR="hx"
+export NH_FLAKE="$HOME/.config/nixos"
 
 mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
@@ -13,20 +14,66 @@ event add directory.change direnv rush_direnv_hook
 
 rush_prompt_transient() {
   if test "$?" = 0; then
-    prompt text '❯ '
+    prompt segment --fg bright-black '❯ '
   else
     prompt segment --fg red '❯ '
   fi
 }
 
+rush_has_stopped_jobs() {
+    jobs_file="${TMPDIR:-/tmp}/rush-jobs-$$"
+
+    jobs >"$jobs_file" 2>/dev/null
+
+    if grep -q 'Stopped' "$jobs_file"; then
+        rm -f "$jobs_file"
+        return 0
+    fi
+
+    rm -f "$jobs_file"
+    return 1
+}
+
+rush_update_job_count() {
+    jobs_file="${TMPDIR:-/tmp}/rush-jobs-$$"
+
+    jobs >"$jobs_file" 2>/dev/null
+    rush_stopped_jobs=$(grep -c 'Stopped' "$jobs_file")
+    rm -f "$jobs_file"
+}
+
 rush_prompt() {
-  prompt segment --fg blue "$(prompt_pwd)"
-  prompt async git --ttl 2000 --prefix ' ' --fg yellow -- rush_prompt_git
+  rush_prompt_status=$?
+  rush_update_job_count
+
+  if test -n "${SSH_TTY-}"; then
+	prompt segment --fg green "$(whoami)@$(hostname) "
+  fi
+
+  if test "$(id -u)" = 0; then
+    prompt segment --fg red "$(prompt_pwd)"
+  else
+    prompt segment --fg cyan "$(prompt_pwd)"
+  fi
+
+  prompt async git --ttl 2000 --prefix ' ' --fg bright-blue -- rush_prompt_git
   prompt newline
-  prompt text '❯ '
+
+  if test "${rush_stopped_jobs:-0}" -gt 0; then
+    prompt segment --fg yellow "${rush_stopped_jobs}•"
+  fi
+
+  if test "$rush_prompt_status" = 0; then
+      prompt segment --fg green '❯ '
+  else
+      prompt segment --fg red '❯ '
+  fi
 }
 
 rush_prompt_right() {
+  if test -n "${IN_NIX_SHELL-}"; then
+    prompt segment --fg yellow "✱ "
+  fi
   if test "$(prompt_duration)" != ""; then
     prompt segment --dim "$(prompt_duration)"
   fi
@@ -52,7 +99,7 @@ if command -v git >/dev/null 2>&1; then
     abbr gco 'git checkout'
     abbr gb 'git branch'
     abbr gr 'git remote'
-    abbr grv 'git remote -'
+    abbr grv 'git remote -v'
 fi
 
 if command -v bat >/dev/null 2>&1; then
