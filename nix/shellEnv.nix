@@ -18,7 +18,6 @@
       ripgrep
       # Utility
       direnv
-      zoxide
       # Git
       git
       tig

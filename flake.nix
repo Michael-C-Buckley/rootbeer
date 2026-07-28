@@ -1,8 +1,11 @@
 {
   description = "Michael's Rootbeer Configs";
-  inputs.nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
+  inputs = {
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
+    rush.url = "github:michael-c-buckley/rush/nix";
+  };
 
-  outputs = {nixpkgs, ...}: let
+  outputs = {nixpkgs, ...} @ inputs: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
     p = forAllSystems (system:
       import nixpkgs {
@@ -19,8 +22,11 @@
       system:
         builtins.listToAttrs (map (n: {
           name = n;
-          value = import ./nix/${n}.nix {pkgs = p.${system};};
-        }) ["nushell" "helix" "kitty" "zsh"])
+          value = import ./nix/${n}.nix {
+            pkgs = p.${system};
+            inherit inputs;
+          };
+        }) ["nushell" "helix" "kitty" "rush" "zsh"])
     );
   };
 }

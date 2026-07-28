@@ -1,5 +1,5 @@
 # Wrapped helix, includes my configs and the tools needed for them
-{pkgs}: let
+{pkgs, ...}: let
   printConfig = {
     name,
     cfg,

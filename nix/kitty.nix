@@ -1,4 +1,4 @@
-{pkgs}: let
+{pkgs, ...}: let
   font = pkgs.makeFontsConf {fontDirectories = [pkgs.lilex];};
   config = ../configs/terminal/kitty/kitty.conf;
 in

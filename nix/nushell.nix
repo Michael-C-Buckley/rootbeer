@@ -1,12 +1,11 @@
 # Wrapped nushell
-{pkgs}: let
+{pkgs, ...}: let
   shellEnv = import ./shellEnv.nix {inherit pkgs;};
   printConfig = {
     name,
     cfg,
   }:
     import ./printConfig.nix {inherit pkgs name cfg;};
-
 
   # Nushell configs from the other part of this repo
   configs = ../configs/shells/nushell;
@@ -24,7 +23,7 @@
     name = "nushell-env";
     paths = builtins.attrValues {
       inherit shellEnv printCfg printEnv;
-      inherit (pkgs) fish carapace;
+      inherit (pkgs) fish carapace zoxide;
     };
   };
 in
