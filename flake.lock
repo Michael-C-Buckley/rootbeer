@@ -13,9 +13,42 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1784796856,
+        "narHash": "sha256-vwxWgF+Gj276WznzGb1LxGsK/39HaQwgQXiU3EkC844=",
+        "rev": "e2587caef70cea85dd97d7daab492899902dbf5d",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1040357.e2587caef70c/nixexprs.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "rush": "rush"
+      }
+    },
+    "rush": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1785034282,
+        "narHash": "sha256-1mKUhg0IlYc/LYEY2q1GYJyIiFqefP3iT9Jsf8UdiVc=",
+        "owner": "michael-c-buckley",
+        "repo": "rush",
+        "rev": "f1bb7c391f52548674abf7c40cd20a1652ec2127",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michael-c-buckley",
+        "ref": "nix",
+        "repo": "rush",
+        "type": "github"
       }
     }
   },

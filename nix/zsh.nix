@@ -1,12 +1,12 @@
 # WIP
 # Wrapped zsh
-{pkgs}: let
+{pkgs, ...}: let
   shellEnv = import ./shellEnv.nix {inherit pkgs;};
-  printConfig = {
-    name,
-    cfg,
-  }:
-    import ./printConfig.nix {inherit pkgs name cfg;};
+  #printConfig = {
+  #  name,
+  #  cfg,
+  #}:
+  #  import ./printConfig.nix {inherit pkgs name cfg;};
 
   # zsh configs from the other part of this repo
   configs = ../configs/shells/zsh;
