@@ -86,11 +86,9 @@ _zsh_find_plugin_file() {
 	return 1
 }
 
-typeset -g _zsh_fzf_tab_file=''
 typeset -g _zsh_abbr_file=''
 typeset -g _zsh_autosuggestions_file=''
 typeset -g _zsh_transient_prompt_file=''
-typeset -g _zsh_syntax_highlighting_file=''
 typeset -ga _zsh_plugin_completion_dirs
 _zsh_plugin_completion_dirs=()
 
@@ -100,10 +98,6 @@ typeset _zsh_plugin_paths_file="${ZSH_PLUGIN_PATHS_FILE:-$ZDOTDIR/plugin-paths.z
 [[ -r "$_zsh_plugin_paths_file" ]] && source "$_zsh_plugin_paths_file"
 unset _zsh_plugin_paths_file
 
-if [[ -z "$_zsh_fzf_tab_file" ]] &&
-   _zsh_find_plugin_file fzf-tab/fzf-tab.zsh; then
-	_zsh_fzf_tab_file="$REPLY"
-fi
 if [[ -z "$_zsh_abbr_file" ]] && _zsh_find_plugin_file \
 	zsh-abbr/zsh-abbr.zsh \
 	zsh/zsh-abbr/zsh-abbr.zsh; then
@@ -117,10 +111,6 @@ fi
 if [[ -z "$_zsh_transient_prompt_file" ]] &&
    _zsh_find_plugin_file zsh-transient-prompt/transient-prompt.zsh-theme; then
 	_zsh_transient_prompt_file="$REPLY"
-fi
-if [[ -z "$_zsh_syntax_highlighting_file" ]] &&
-   _zsh_find_plugin_file zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; then
-	_zsh_syntax_highlighting_file="$REPLY"
 fi
 
 # Completion directories must be added to fpath before compinit. Nix profiles
@@ -187,14 +177,6 @@ if (( $+commands[fzf] )); then
 	source <(fzf --zsh 2>/dev/null)
 fi
 
-# fzf-tab must load after compinit and fzf, but before autosuggestions.
-if (( $+commands[fzf] )) &&
-   [[ -n "$_zsh_fzf_tab_file" ]]; then
-	source "$_zsh_fzf_tab_file"
-	zstyle ':fzf-tab:*' fzf-flags --height=60% --layout=reverse --border
-	zstyle ':fzf-tab:*' switch-group '<' '>'
-fi
-
 # Use command-aware completion when a command is present; otherwise retain
 # Ctrl-T's generic file picker.
 _fzf_context_widget() {
@@ -217,25 +199,6 @@ fi
 if [[ -n "$_zsh_abbr_file" ]]; then
 	ABBR_USER_ABBREVIATIONS_FILE="$ZDOTDIR/abbreviations"
 	source "$_zsh_abbr_file"
-fi
-
-# Teach zsh-syntax-highlighting that loaded abbreviations are valid commands.
-# The regexp highlighter runs before the main highlighter so its overlapping
-# region takes precedence over the unknown-command red.
-if (( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )); then
-	typeset -ga ZSH_HIGHLIGHT_HIGHLIGHTERS
-	(( ${ZSH_HIGHLIGHT_HIGHLIGHTERS[(Ie)main]} )) ||
-		ZSH_HIGHLIGHT_HIGHLIGHTERS+=(main)
-	(( ${ZSH_HIGHLIGHT_HIGHLIGHTERS[(Ie)regexp]} )) ||
-		ZSH_HIGHLIGHT_HIGHLIGHTERS=(regexp $ZSH_HIGHLIGHT_HIGHLIGHTERS)
-
-	typeset -gA ZSH_HIGHLIGHT_REGEXP
-	typeset -g _zsh_abbr_highlight_pattern
-	_zsh_abbr_highlight_pattern='^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$'
-	ZSH_HIGHLIGHT_REGEXP+=(
-		"$_zsh_abbr_highlight_pattern" 'fg=green'
-	)
-	unset _zsh_abbr_highlight_pattern
 fi
 
 if [[ -n "$_zsh_autosuggestions_file" ]]; then
@@ -275,11 +238,6 @@ killdns() {
 	sudo killall -HUP mDNSResponder
 }
 
-# Syntax highlighting needs to be sourced after every other ZLE integration.
-if [[ -n "$_zsh_syntax_highlighting_file" ]]; then
-	source "$_zsh_syntax_highlighting_file"
-fi
-
 unfunction _zsh_find_plugin_file
 unset _zsh_brew_prefix
 unset _zsh_plugin_share_roots
@@ -288,4 +246,3 @@ unset _zsh_fzf_tab_file
 unset _zsh_abbr_file
 unset _zsh_autosuggestions_file
 unset _zsh_transient_prompt_file
-unset _zsh_syntax_highlighting_file

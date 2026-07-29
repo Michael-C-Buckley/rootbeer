@@ -4,5 +4,4 @@ elif [[ -x /usr/local/bin/brew ]]; then
 	eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-export PATH="$HOME/.amp/bin:$PATH"
 export PATH="$HOME/.rootbeer/bin:$PATH"

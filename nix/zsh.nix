@@ -40,7 +40,6 @@
         (pkgs)
         fzf-zsh-plugin
         zsh-autosuggestions
-        zsh-syntax-highlighting
         zsh-abbr
         ;
     };
