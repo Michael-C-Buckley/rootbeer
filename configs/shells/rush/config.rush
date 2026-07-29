@@ -42,6 +42,19 @@ rush_update_job_count() {
     rm -f "$jobs_file"
 }
 
+rush_prompt_pwd() {
+  git_root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+    prompt_pwd
+    return
+  }
+
+  case "$PWD" in
+    "$git_root") printf '%s\n' "${git_root##*/}" ;;
+    "$git_root"/*) printf '%s/%s\n' "${git_root##*/}" "${PWD#"$git_root"/}" ;;
+    *) prompt_pwd ;;
+  esac
+}
+
 rush_prompt() {
   rush_prompt_status=$?
   rush_update_job_count
@@ -51,9 +64,9 @@ rush_prompt() {
   fi
 
   if test "$(id -u)" = 0; then
-    prompt segment --fg red "$(prompt_pwd)"
+    prompt segment --fg red "$(rush_prompt_pwd)"
   else
-    prompt segment --fg cyan "$(prompt_pwd)"
+    prompt segment --fg cyan "$(rush_prompt_pwd)"
   fi
 
   prompt async git --ttl 2000 --prefix ' ' --fg bright-blue -- rush_prompt_git
@@ -104,7 +117,7 @@ if command -v git >/dev/null 2>&1; then
     abbr grv 'git remote -v'
 fi
 
-fi command -v zfs >/dev/null 2>&1; then
+if command -v zfs >/dev/null 2>&1; then
 	abbr zls 'zfs list -o name,used,compressratio,lused,avail'
 	abbr zsls 'zfs list -t snapshot -S creation -o name,creation,used,written,refer'
 fi
