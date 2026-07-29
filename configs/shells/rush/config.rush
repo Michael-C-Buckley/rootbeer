@@ -79,6 +79,8 @@ rush_prompt_right() {
   fi
 }
 
+alias sshn='ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/dev/null'
+
 if command -v eza >/dev/null 2>&1; then
     alias ll='eza -lah --git --icons auto'
     alias ls='eza'
@@ -102,6 +104,15 @@ if command -v git >/dev/null 2>&1; then
     abbr grv 'git remote -v'
 fi
 
+fi command -v zfs >/dev/null 2>&1; then
+	abbr zls 'zfs list -o name,used,compressratio,lused,avail'
+	abbr zsls 'zfs list -t snapshot -S creation -o name,creation,used,written,refer'
+fi
+
 if command -v bat >/dev/null 2>&1; then
     alias cat='bat -p'
+fi
+
+if command -v kubectl >/dev/null 2>&1; then
+	abbr k 'kubectl'
 fi
