@@ -7,6 +7,8 @@ font-family = Lilex Nerd Font Mono
 background = #000000
 keybind = performable:ctrl+shift+h=previous_tab
 keybind = performable:ctrl+shift+l=next_tab
+tab-inherit-working-directory = false
+working-directory = home
 ]]
 
 if rb.host.os == "macos" then
