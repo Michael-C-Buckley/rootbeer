@@ -36,6 +36,7 @@ if rb.host.os == "macos" then
   require("modules.apps.nvim")
   require("modules.shells.fish")
   require("modules.shells.starship")
+  require("modules.desktop.aerospace")
 end
 
 if rb.host.os == "linux" then
