@@ -55,6 +55,18 @@ rush_prompt_pwd() {
   esac
 }
 
+rush_prompt_git_stash() {
+  if git rev-parse --verify --quiet refs/stash >/dev/null 2>&1; then
+    printf '≡'
+  fi
+}
+
+rush_prompt_git_conflict() {
+  if git ls-files --unmerged 2>/dev/null | grep -q .; then
+    printf ';'
+  fi
+}
+
 rush_prompt() {
   rush_prompt_status=$?
   rush_update_job_count
@@ -70,6 +82,9 @@ rush_prompt() {
   fi
 
   prompt async git --ttl 2000 --prefix ' ' --fg bright-blue -- rush_prompt_git
+  prompt async git_stash --ttl 2000 --prefix ' ' --fg bright-blue -- rush_prompt_git_stash
+  # I want to make this magenta but it is not working and I have to test more
+  prompt async git_conflict --ttl 2000 --prefix ' ' --fg bright-yellow -- rush_prompt_git_conflict
   prompt newline
 
   if test "${rush_stopped_jobs:-0}" -gt 0; then
