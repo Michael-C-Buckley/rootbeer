@@ -40,8 +40,9 @@ if rb.host.os == "macos" then
 end
 
 if rb.host.os == "linux" then
-  -- Import shells unconditionally as they're detected
+  -- Unconditionally import as they're detected
   require("modules.shells.fish")
   require("modules.shells.starship")
+  require("modules.apps.helix")
   host_import(rb.host.hostname)
 end
