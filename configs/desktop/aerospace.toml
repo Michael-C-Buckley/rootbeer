@@ -55,6 +55,31 @@ on-mode-changed = []
 9 = 'built-in'
 0 = 'built-in'
 
+# Send primary application windows to their dedicated workspaces when detected.
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.openai.chat'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'Cisco-Systems.Spark'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = 'move-node-to-workspace 8'
+
 # Float Webex secondary/popup windows, but keep its main "Webex" window tiled.
 [[on-window-detected]]
 if.app-id = 'Cisco-Systems.Spark'
