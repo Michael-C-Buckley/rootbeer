@@ -1,6 +1,6 @@
 {
   pkgs,
-  extraPkgs,
+  extraPkgs ? [],
   ...
 }: let
   iproute2 =
