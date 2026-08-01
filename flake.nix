@@ -26,7 +26,7 @@
             pkgs = p.${system};
             inherit inputs;
           };
-        }) ["nushell" "helix" "kitty" "rush" "zsh"])
+        }) ["fish" "nushell" "helix" "kitty" "rush" "zsh"])
     );
   };
 }
