@@ -59,9 +59,9 @@ set -g fish_transient_prompt 1
 # Better colors for ls (if available)
 set -gx CLICOLOR 1
 
-# Native prompt, based on the starship prompt I use
+# Native Fish prompt matching the Rush prompt.
 set -l fish_config_dir (path dirname (path resolve (status filename)))
-for prompt_file in fish_prompt.fish fish_mode_prompt.fish
+for prompt_file in new_prompt.fish fish_mode_prompt.fish
     set -l prompt_path $fish_config_dir/functions/$prompt_file
     test -r $prompt_path; and source $prompt_path
 end
@@ -146,16 +146,6 @@ end
 
 if type -q direnv
     direnv hook fish | source
-end
-
-function starship_transient_prompt_func
-    # A bright black character
-    printf '\e[90m❯\e[0m '
-end
-
-if type -q starship
-    set -gx STARSHIP_CONFIG ~/.config/starship/default.toml
-    starship init fish | source
 end
 
 function ru --description "Root Fish with my interactive config"
