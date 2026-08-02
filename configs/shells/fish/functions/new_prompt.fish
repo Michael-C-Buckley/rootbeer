@@ -185,6 +185,10 @@ function fish_prompt
 end
 
 function fish_right_prompt
+    if contains -- --final-rendering $argv
+        return
+    end
+
     if set -q IN_NIX_SHELL
         printf '%s✱%s ' (set_color yellow) (set_color normal)
     end
