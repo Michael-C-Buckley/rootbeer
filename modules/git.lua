@@ -124,6 +124,11 @@ if delta then
   }
 end
 
+local hunk = optional.find_binary("hunk")
+if hunk then
+  config.pager = hunk .. " pager"
+end
+
 if editor then
   config.editor = editor
 end
