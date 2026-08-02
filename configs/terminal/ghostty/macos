@@ -11,3 +11,4 @@ working-directory = home
 font-size = 14
 font-thicken = true
 font-thicken-strength = 255
+command = /opt/homebrew/bin/fish
