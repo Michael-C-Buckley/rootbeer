@@ -1,6 +1,6 @@
 -- DMS
 hl.on("hyprland.start", function()
-  hl.exec_cmd("dmr run")
+  hl.exec_cmd("dms run")
 end)
 
 local ipc = "dms ipc "

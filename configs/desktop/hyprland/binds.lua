@@ -1,8 +1,8 @@
 -- Based heavily on the default config
 
 local mainMod = "SUPER"
-local terminal = "beer"
-local terminal2 = "alacritty"
+local terminal = "kitty"
+local terminal2 = "beer"
 local browser = "zen"
 local browser2 = "helium"
 local menu = "wmenu-run"
