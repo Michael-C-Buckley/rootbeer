@@ -6,10 +6,7 @@ require("lookfeel")
 
 -- Host files
 require("host")
-
--- Desktop Shell (on DMS currently)
--- pcall(require, "noctalia")
-require("dms")
+require("zesis")
 
 hl.env("XCURSOR_SIZE", "28")
 hl.env("HYPRCURSOR_SIZE", "28")
