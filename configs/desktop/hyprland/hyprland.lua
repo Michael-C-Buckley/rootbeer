@@ -6,7 +6,9 @@ require("lookfeel")
 
 -- Host files
 require("host")
-require("zesis")
+-- File created that determines the desktop shell
+-- Controlled by NixOS
+require("shell")
 
 hl.env("XCURSOR_SIZE", "28")
 hl.env("HYPRCURSOR_SIZE", "28")
