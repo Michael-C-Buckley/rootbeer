@@ -1,8 +1,4 @@
 -- DMS
-hl.on("hyprland.start", function()
-  hl.exec_cmd("dms run")
-end)
-
 local ipc = "dms ipc "
 local mainMod = "SUPER"
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(ipc .. "spotlight toggle"))
