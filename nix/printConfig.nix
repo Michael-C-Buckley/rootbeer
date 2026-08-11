@@ -3,10 +3,10 @@
   name,
   cfg,
 }:
-pkgs.writeShellApplication {
-  inherit name;
-  runtimeInputs = [pkgs.bat];
-  text = ''
-    bat "$@" ${cfg}
-  '';
-}
+pkgs.writers.writeNuBin name
+# nu
+''
+  def --wrapped main [...args] {
+    ${pkgs.bat}/bin/bat ...$args ${cfg}
+  }
+''
