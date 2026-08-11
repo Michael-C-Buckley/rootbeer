@@ -1,5 +1,6 @@
 # Wrapped helix, includes my configs and the tools needed for them
 {pkgs, ...}: let
+  inherit (pkgs.lib) getExe;
   printConfig = {
     name,
     cfg,
@@ -17,23 +18,21 @@
 
   runtimeEnv = pkgs.buildEnv {
     name = "hx-runtime-env";
-    paths = with pkgs;
-      [
-        # Nix
-        alejandra
-        nil
-        nixd
-        # Python
-        ruff
-        basedpyright
-        # Yaml/json
-        biome
-        yaml-language-server
-        vscode-json-languageserver
-        # Other
-        nushell
-      ]
-      ++ [printCfg printLanguages];
+    paths = with pkgs; [
+      # Nix
+      alejandra
+      nil
+      nixd
+      # Python
+      ruff
+      basedpyright
+      # Yaml/json
+      biome
+      yaml-language-server
+      vscode-json-languageserver
+      # Other
+      nushell
+    ];
   };
   ln = "${pkgs.coreutils}/bin/ln";
 
@@ -43,10 +42,10 @@
       mkdir ($env.out + "/bin") ($env.out + "/helix")
 
       ${ln} -s "${pkgs.helix}/share" ($env.out + "/share")
-      ${ln} -s "${pkgs.helix}/bin" ($env.out + "/bin")
-
       ${ln} -s ${configs}/config.toml ($env.out + "/helix/config.toml")
       ${ln} -s ${configs}/languages.toml ($env.out + "/helix/languages.toml")
+      ${ln} -s ${getExe printCfg} ($env.out + "/bin")
+      ${ln} -s ${getExe printLanguages} ($env.out + "/bin")
 
       let wrapperText = ${pkgs.coreutils}/bin/cat $env.wrapperPath
       "#!${pkgs.nushell}/bin/nu\n" + ("$env.XDG_CONFIG_HOME = \"" + $env.out + "\"\n") + $wrapperText o> ($env.out + "/bin/hx")
