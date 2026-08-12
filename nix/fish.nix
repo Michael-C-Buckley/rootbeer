@@ -4,17 +4,23 @@
     extraPkgs = [pkgs.zoxide];
   };
   configDir = ../configs/shells/fish;
+  fishScript =
+    # fish
+    ''
+      #!${pkgs.fish}/bin/fish
+      set -gx PATH ${shellEnv}/bin $PATH
+      set fish_function_path ${configDir}/functions \
+        ${pkgs.fish}/share/fish/functions
+      exec ${pkgs.fish}/bin/fish --init-command 'source ${configDir}/config.fish' $argv
+    '';
 in
   pkgs.symlinkJoin {
     name = "fish";
     paths = [pkgs.fish];
-    nativeBuildInputs = [pkgs.makeWrapper];
     postBuild = ''
-      wrapProgram $out/bin/fish \
-        --add-flags "--init-command 'source ${configDir}/config.fish'" \
-        --set fish_function_path \
-          "${configDir}/functions;${pkgs.fish}/share/fish/functions" \
-        --prefix PATH : ${shellEnv}/bin
+      rm -rf $out/bin/fish
+      echo ${fishScript} > $out/bin/fish
+      chmod +x $out/bin/fish
     '';
     passthru.shellPath = "/bin/fish";
   }
