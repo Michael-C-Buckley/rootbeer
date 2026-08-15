@@ -19,7 +19,9 @@ in
     paths = [pkgs.fish];
     postBuild = ''
       rm -rf $out/bin/fish
-      echo ${fishScript} > $out/bin/fish
+      cat > "$out/bin/fish" <<'EOF'
+      ${fishScript}
+      EOF
       chmod +x $out/bin/fish
     '';
     passthru.shellPath = "/bin/fish";
