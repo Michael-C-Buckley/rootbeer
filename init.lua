@@ -8,7 +8,7 @@ rb.profile.define({
   },
 })
 
-require("modules.git")
+-- require("modules.git")
 
 local function host_import(hostname)
   if not hostname then
@@ -32,11 +32,12 @@ local function host_import(hostname)
 end
 
 if rb.host.os == "macos" then
-  require("modules.terminals.ghostty")
-  require("modules.apps.nvim")
-  require("modules.shells.fish")
-  require("modules.shells.starship")
-  require("modules.desktop.aerospace")
+  -- require("modules.terminals.ghostty")
+  -- require("modules.apps.nvim")
+  -- require("modules.shells.fish")
+  -- require("modules.shells.starship")
+  -- require("modules.desktop.aerospace")
+  require("modules.terminals.kitty")
 end
 
 if rb.host.os == "linux" then
