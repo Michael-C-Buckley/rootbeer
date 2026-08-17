@@ -37,7 +37,12 @@ if rb.host.os == "macos" then
   -- require("modules.shells.fish")
   -- require("modules.shells.starship")
   -- require("modules.desktop.aerospace")
-  require("modules.terminals.kitty")
+  local kitty = require("modules.terminals.kitty")
+  kitty.config({
+    shell = "/run/current-system/sw/bin/fish",
+    font = "family='Lilex Nerd Font' style=Medium",
+    font_size = 11,
+  })
 end
 
 if rb.host.os == "linux" then
