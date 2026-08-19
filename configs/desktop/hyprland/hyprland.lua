@@ -4,11 +4,8 @@ require("binds")
 require("input")
 require("lookfeel")
 
--- Host files
-require("host")
--- File created that determines the desktop shell
--- Controlled by NixOS
-require("shell")
+require("hosts")
+require("dms")
 
 hl.env("XCURSOR_SIZE", "28")
 hl.env("HYPRCURSOR_SIZE", "28")
