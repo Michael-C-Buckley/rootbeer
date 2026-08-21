@@ -21,7 +21,7 @@ in
   pkgs.symlinkJoin {
     name = "kitty";
     inherit paths;
-    nativeBuildInputs = [pkgs.makeWrapper];
+    nativeBuildInputs = [pkgs.makeBinaryWrapper];
     postBuild =
       ''
         ln -s ${config} $out/kitty.conf
