@@ -22,8 +22,7 @@
       system:
         builtins.listToAttrs (map (n: {
           name = n;
-          value = import ./nix/${n}.nix {
-            pkgs = p.${system};
+          value = p.${system}.callPackage ./nix/${n}.nix {
             inherit inputs;
           };
         }) ["fish" "nushell" "helix" "kitty" "rush" "zsh"])
