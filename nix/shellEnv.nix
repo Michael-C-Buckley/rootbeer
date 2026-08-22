@@ -4,11 +4,9 @@
   ...
 }: let
   iproute2 =
-    if pkgs.stdenv.isDarwin
+    if pkgs.stdenv.hostPlatform.isDarwin
     then [pkgs.iproute2mac]
-    else if pkgs.stdenv.isLinux
-    then [pkgs.iproute2]
-    else [];
+    else [pkgs.iproute2];
 
   common =
     builtins.attrValues {
