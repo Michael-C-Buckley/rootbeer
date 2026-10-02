@@ -1,0 +1,21 @@
+excludes = [
+  "*.lock",
+  ".config/**",
+  ".envrc",
+  ".gitignore",
+  "nvim-pack-lock.json",
+]
+on-unmatched = "warn"
+
+[formatter.nixfmt]
+command = "nixfmt"
+includes = ["*.nix"]
+
+[formatter.mdformat]
+command = "mdformat"
+includes = ["*.md"]
+
+[formatter.stylua]
+command = "stylua"
+options = ["--config-path", ".config/stylua.toml"]
+includes = ["*.lua"]

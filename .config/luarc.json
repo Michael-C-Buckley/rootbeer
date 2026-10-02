@@ -1,0 +1,7 @@
+{
+  "workspace": {
+    "library": [
+      "${env:HOME}/.local/share/rootbeer/typedefs"
+    ]
+  }
+}

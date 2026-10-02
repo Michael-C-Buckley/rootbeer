@@ -1,0 +1,6 @@
+[files]
+extend-exclude = ["nvim-pack-lock.json"]
+
+[default.extend-words]
+noice = "noice"
+nd = "nd"

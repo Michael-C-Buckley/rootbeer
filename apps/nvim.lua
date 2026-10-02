@@ -1,0 +1,5 @@
+local rb = require("rootbeer")
+local lib = require("lib")
+lib.ensure_package("neovim", "nvim")
+lib.ensure_package("tree-sitter")
+rb.link("configs/nvim", "~/.config/nvim")

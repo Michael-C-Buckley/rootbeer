@@ -1,0 +1,73 @@
+[branch]
+	sort = -committerdate
+
+[column]
+	ui = auto
+
+[commit]
+	gpgSign = true
+	verbose = true
+
+[core]
+	editor = nvim
+	excludesfile = ~/.config/git/ignore
+	pager = delta
+
+[delta]
+	line-numbers = true
+	navigate = true
+	side-by-side = true
+	zero-style = dim syntax
+
+[diff]
+	algorithm = histogram
+	colorMoved = default
+
+[fetch]
+	prune = true
+
+[gpg]
+	format = ssh
+
+[help]
+	autocorrect = prompt
+
+[http]
+	postBuffer = 157286400
+
+[init]
+	defaultBranch = main
+
+[interactive]
+	diffFilter = delta --color-only
+
+[merge]
+	conflictstyle = zdiff3
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	followTags = true
+
+[rebase]
+	autoSquash = true
+	updateRefs = true
+
+[rerere]
+	enabled = true
+
+[tag]
+	gpgSign = true
+	sort = version:refname
+
+[user]
+	name = Michael Buckley
+	email = michaelcbuckley@proton.me
+	signingkey = ~/.ssh/signingKey
+	useConfigOnly = true
+
+# Optional machine-local settings for things not managed by rootbeer
+[include]
+	path = local.inc
