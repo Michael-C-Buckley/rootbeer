@@ -9,7 +9,6 @@ local plugins = {
   },
   "https://github.com/folke/snacks.nvim",
   "https://github.com/nvim-mini/mini.nvim",
-  "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/akinsho/bufferline.nvim",
   "https://github.com/stevearc/oil.nvim",
@@ -38,17 +37,22 @@ local plugins = {
   "https://github.com/t-b-t-nchos/aquavium.nvim",
 }
 
+-- Set this flag before loading init.lua when Nix supplies the plugin,
+-- parsers, and queries on runtimepath.
+if not vim.g.nix_treesitter then
+  plugins[#plugins + 1] = "https://github.com/nvim-treesitter/nvim-treesitter"
+end
+
 vim.pack.add(plugins, {
   confirm = false,
   load = true,
 })
 
 vim.api.nvim_create_user_command("PackUpdate", function()
-  vim.pack.update({
+  local names = {
     "oasis.nvim",
     "snacks.nvim",
     "mini.nvim",
-    "nvim-treesitter",
     "lualine.nvim",
     "bufferline.nvim",
     "oil.nvim",
@@ -72,5 +76,11 @@ vim.api.nvim_create_user_command("PackUpdate", function()
     "neovim-ayu",
     "kanso.nvim",
     "aquavium.nvim",
-  })
+  }
+
+  if not vim.g.nix_treesitter then
+    names[#names + 1] = "nvim-treesitter"
+  end
+
+  vim.pack.update(names)
 end, { desc = "Review updates for this config's active plugins" })

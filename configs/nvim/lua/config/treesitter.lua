@@ -17,18 +17,22 @@ local parsers = {
   "yang",
 }
 
-local treesitter = require("nvim-treesitter")
-treesitter.setup({
-  install_dir = vim.fn.stdpath("data") .. "/site",
-})
+-- Nix supplies the plugin, parsers, and queries on runtimepath. Skip setup
+-- in that mode so the local install directory is not prepended ahead of them.
+if not vim.g.nix_treesitter then
+  local treesitter = require("nvim-treesitter")
+  treesitter.setup({
+    install_dir = vim.fn.stdpath("data") .. "/site",
+  })
 
--- Installation is asynchronous and a no-op for parsers already present. The
--- current nvim-treesitter rewrite requires its CLI, so avoid noisy failed
--- builds on machines where that dependency has not been installed yet.
-if vim.fn.executable("tree-sitter") == 1 then
-  vim.schedule(function()
-    treesitter.install(parsers)
-  end)
+  -- Installation is asynchronous and a no-op for parsers already present. The
+  -- current nvim-treesitter rewrite requires its CLI, so avoid noisy failed
+  -- builds on machines where that dependency has not been installed yet.
+  if vim.fn.executable("tree-sitter") == 1 then
+    vim.schedule(function()
+      treesitter.install(parsers)
+    end)
+  end
 end
 
 vim.api.nvim_create_autocmd("FileType", {
