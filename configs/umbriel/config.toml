@@ -36,10 +36,8 @@ offset_y = 2
 [layout]
 mode = "dwindle"
 gap = 8
-width_presets = [0.333, 0.5, 0.667]
 
 [layout.scrolling]
-default_width_fraction = 0.5
 center_underfull_strip = true
 
 [input]
@@ -148,14 +146,12 @@ blur_optimized = true
 
 [[window_rule]]
 default_floating = true
-default_size = [1020, 900]
 
 [window_rule.match]
 app_id = "^dev.noctalia.Noctalia$"
 
 [[window_rule]]
 default_floating = true
-default_size = [800, 600]
 
 [window_rule.match]
 app_id = "^dev.noctalia.UmbrielSharePicker$"
