@@ -162,3 +162,8 @@ blur_ignore_alpha = 0.5
 
 [layer_rule.match]
 namespace = '^noctalia-(bar-[^"]+|notification|dock|panel|attached-panel|osd)$'
+
+
+[output.DP-1]
+mode = "3440x1440@165"
+workspaces = 10
