@@ -10,31 +10,13 @@
       }
     }
   },
-  "input_fingerprint": "6f2a7793cad928104cfdefa42d5cebf7ddef0fe510fbfa054b6776b3a170bf2d",
+  "input_fingerprint": "53311cabaaac28dde2a1345eacf8494f2cd10654fb7429b768e3b40e5388728f",
   "resolutions": {
-    "1a20917d4e5246e7c114ee53c89c79019cba9a30ca8b7ca2a92c29c28a29010e": {
-      "package": "uv@0.12.19",
-      "proof": {
-        "type": "package_record",
-        "record": "6e5eff2c4abd96e58cadebeba7f3eafaceb519938568f2737cda97c78c3152b8",
-        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
-        "system": "x86_64-linux"
-      }
-    },
     "b6d5c0a8a2b6af5344f1610de6956d5755ad7c9d216da48a15a644112c80582c": {
       "package": "rootbeer@0.1.0-main+351ac8046b92",
       "proof": {
         "type": "package_record",
         "record": "2619c1dfb9ad1f08912cadc3c44e9576bf6557d7b8331394756c269f5071f6f8",
-        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
-        "system": "x86_64-linux"
-      }
-    },
-    "dc1fed668ff07386084eb3070133066c6a983408efd91aa92dcd97519e993c43": {
-      "package": "tree-sitter@0.27.0",
-      "proof": {
-        "type": "package_record",
-        "record": "a491f3a51b4406ebb4fe02a98a65b917621f873430c840dd7cc745b9bcc47784",
         "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
         "system": "x86_64-linux"
       }
@@ -64,51 +46,6 @@
         }
       },
       "output_sha256": "753cd39dfd773fb44c4d960b1daa9eea5b969f72265bb31638dfb2349779348f"
-    },
-    "tree-sitter@0.27.0": {
-      "name": "tree-sitter",
-      "version": "0.27.0",
-      "source": {
-        "Url": {
-          "url": "ghcr://rootbeer-org/pdr/tree-sitter@sha256:26143f764da356a7373c10b3a3839ba71fbb3ff80c7e7fb25642fd8201730d07",
-          "sha256": "26143f764da356a7373c10b3a3839ba71fbb3ff80c7e7fb25642fd8201730d07"
-        }
-      },
-      "install": {
-        "Archive": {
-          "format": "TarGz",
-          "strip_prefix": null
-        }
-      },
-      "provides": {
-        "bins": {
-          "tree-sitter": "tree-sitter"
-        }
-      },
-      "output_sha256": "de4767774352f824345b18935f2803ee28f6b0421ba0d5895909c74fc2995269"
-    },
-    "uv@0.12.19": {
-      "name": "uv",
-      "version": "0.12.19",
-      "source": {
-        "Url": {
-          "url": "ghcr://rootbeer-org/pdr/uv@sha256:dca428977d8749fbac357f7a5349b7c017cc575fafd89eba89a777a20686d409",
-          "sha256": "dca428977d8749fbac357f7a5349b7c017cc575fafd89eba89a777a20686d409"
-        }
-      },
-      "install": {
-        "Archive": {
-          "format": "TarGz",
-          "strip_prefix": null
-        }
-      },
-      "provides": {
-        "bins": {
-          "uv": "uv-x86_64-unknown-linux-musl/uv",
-          "uvx": "uv-x86_64-unknown-linux-musl/uvx"
-        }
-      },
-      "output_sha256": "f66960c7aa86574b2b2b12ce7a5654e8fe42d06866e0ec670dfa57820da702e3"
     }
   }
 }

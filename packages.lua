@@ -1,7 +1,7 @@
 -- Packages that will be added if they aren't already in path
-local lib = require("lib")
+local rb = require("rootbeer")
 
-local packages = {
+rb.packages({
   "age",
   "bat",
   "direnv",
@@ -9,20 +9,11 @@ local packages = {
   "dust",
   "fd",
   "fzf",
-  { package = "ripgrep", command = "rg" },
+  "ripgrep",
   "jq",
-  { package = "rootbeer", command = "rb" },
   "rsync",
   "telnet",
   "uv",
   "yq",
   "zoxide",
-}
-
-for _, item in ipairs(packages) do
-  if type(item) == "string" then
-    lib.ensure_package(item)
-  else
-    lib.ensure_package(item.package, item.command)
-  end
-end
+})

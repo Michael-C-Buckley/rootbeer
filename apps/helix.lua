@@ -1,6 +1,8 @@
 local rb = require("rootbeer")
 
-require("lib").ensure_package("helix", "hx")
+rb.profile.when("fallback", function()
+  rb.package("helix")
+end)
 
 local src_dir = "configs/helix/"
 local dst_dir = "~/.config/helix/"

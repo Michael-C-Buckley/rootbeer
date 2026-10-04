@@ -1,32 +1,40 @@
 local rb = require("rootbeer")
 local lib = require("lib")
 
-local personal = { "x570", "t14g5", "t14g2" }
-
 rb.profile.define({
   strategy = "hostname",
   profiles = {
-    personal = personal,
+    nixos_desktop = { "x570", "t14g5", "t14g2" },
+    nixos_server = { "b550" },
     fallback = {},
   },
 })
 
-require("packages")
+-- Self-manage the packaging
+rb.package("rootbeer")
+
+-- Unconditional modules
 require("git")
-require("apps/kitty")
 require("apps/nvim")
 require("apps/zsh")
 
-for _, v in ipairs(personal) do
-  if rb.host.hostname == v then
+-- For package management via rootbeer
+rb.profile.when("fallback", function()
+  require("packages")
+end)
+
+-- Graphical hosts that aren't serveres
+rb.profile.when({ "nixos_desktop", "fallback" }, function()
+  require("apps/zed")
+  require("apps/kitty")
+
+  if rb.host.os == "linux" then
     require("linux/noctalia")
-    require("apps/zed")
   end
-end
+end)
 
 if rb.host.os == "macos" then
   require("apps/ghostty")
-  require("apps/zed")
   require("macos/packages")
   require("macos/aerospace")
   require("macos/ssh-agent")

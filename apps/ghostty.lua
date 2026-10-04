@@ -21,5 +21,8 @@ if rb.host.os == "macos" then
   cfg = cfg .. mac_cfg
 end
 
-require("lib").ensure_package("ghostty")
+rb.profile.when("fallback", function()
+  rb.package("ghostty")
+end)
+
 rb.file("~/.config/ghostty/config", cfg)
