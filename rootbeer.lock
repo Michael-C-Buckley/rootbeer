@@ -1,35 +1,867 @@
 {
-  "schema": 1,
+  "schema": 3,
   "inputs": {
     "resolvers": {
       "rootbeer": {
         "type": "repository",
         "url": "https://pdr.rbpkg.com/v3/current.json",
         "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
-        "root": "e6cb6aed70fee99d6b0242b7e3802a679455b4adb5cf6aff3fb34977849fd00a"
+        "root": "d538132123ea99f5eca30d21dfb728f34ef7593d117f9dac130516e4c0c9cb0c"
       }
     }
   },
-  "input_fingerprint": "53311cabaaac28dde2a1345eacf8494f2cd10654fb7429b768e3b40e5388728f",
+  "input_fingerprint": "bbbfb51984331536c227c933b6f148b561645581c032fb77fd9e26e25f31d2d4",
   "resolutions": {
-    "b6d5c0a8a2b6af5344f1610de6956d5755ad7c9d216da48a15a644112c80582c": {
-      "package": "rootbeer@0.1.0-main+351ac8046b92",
+    "011490eaaffa1253df9f89fc6ecefd625acd550d705a3b3d10e3d5eccd8a719b": {
+      "package": "ripgrep@15.2.0",
       "proof": {
         "type": "package_record",
-        "record": "2619c1dfb9ad1f08912cadc3c44e9576bf6557d7b8331394756c269f5071f6f8",
+        "record": "fb056d2a05197f8c93b668462533db0625c83f1c794ce5cc1e0fd2476b3c8951",
         "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
-        "system": "x86_64-linux"
+        "system": "aarch64-macos"
+      }
+    },
+    "01a3e4191eb92af1a3cfa850caaca0cea855c8b9fb47e648fa39f0b1d3733f77": {
+      "package": "openssh@10.5p1",
+      "proof": {
+        "type": "package_record",
+        "record": "f99115f02099b865305792f19b72092f29e3a2b0e782d249d5524893e2ff1e83",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "11b062fccdbf8289da50059f1674499db896d4c26ff95aa06862f335033f8377": {
+      "package": "ghostty@1.3.1",
+      "proof": {
+        "type": "package_record",
+        "record": "95f4302586e00ca0676b0e292a782f1d4a6effacdcea1cde07cc74e4576a27f5",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "18c71d661b27a3db70b4ab6d234f6b1a482aca256c9b85128423ea5f4ee27092": {
+      "package": "starship@1.26.0",
+      "proof": {
+        "type": "package_record",
+        "record": "e2f8f232ad36b6e00c479f04f6118b0fc6c9e379aa68e00b69a6e731be970171",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "1a32e51505eb02b3e0863d70fc192b2d73cb98ca75a54092aac74ca2fc7db67f": {
+      "package": "eza@0.23.5",
+      "proof": {
+        "type": "package_record",
+        "record": "e12e52bb1c1ebf952db65c79560eea128be7fadbc98453cf00a21cb3c81d8ff1",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "221fdeacd312cfb7d49c25383e0931429c2c4a9da73058a5d8c0f12e4c3c36ad": {
+      "package": "direnv@2.37.1",
+      "proof": {
+        "type": "package_record",
+        "record": "3f568a38811220bedceb7801e217a60861a92a1feb36a356c6f53f0ade5ac0e9",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "27a51ff19b45a60672ecf5907fd780c602e1846fedbedf2bd38e6f416264932c": {
+      "package": "dust@1.2.6",
+      "proof": {
+        "type": "package_record",
+        "record": "54aeab7568308fdead80632577c1d69d50387eafe32efe42347969f777c4109e",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "2b63f5bbb0518d2b45edda074182f3092847cb8f7c099ad2786741732090f124": {
+      "package": "neovim@0.12.5",
+      "proof": {
+        "type": "package_record",
+        "record": "414cfd9407b7bfa9c36687ff869151cd9a6bb3ab72bebf8c417ed84f46d59062",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "3a0e768b3fc6844251ddc964e023e07e6e4b486fa5bcc45ab1a42583e486da79": {
+      "package": "yq@4.54.1",
+      "proof": {
+        "type": "package_record",
+        "record": "5a0dfd17d76d2522c8e840ec0a8c2f25b1f1ae644ae89ee3ec20ab5b1029009b",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "4ac597f5a7c65f86b4fe9234e4923571b13011898edc0eeec22b84552fd24347": {
+      "package": "zoxide@0.10.0",
+      "proof": {
+        "type": "package_record",
+        "record": "3119f16cf92a27b2d72781761417e938a369c9771ffe39e5ac745a3d3177ed6c",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "5d05abba7e23107d0bfe560904d62492f8153086cba8d421d3994c1e5b9f97ef": {
+      "package": "tree-sitter@0.27.0",
+      "proof": {
+        "type": "package_record",
+        "record": "e8f82d48117502c17dd6580238d6057770450aa79bc3f545e97b65a8742cbee4",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "6054037d32b41cecc5c0e2aa718483e183a6b1077124d9a2d1911359a07308db": {
+      "package": "delta@0.19.2",
+      "proof": {
+        "type": "package_record",
+        "record": "7effbde354699d396c2d15fbbeae1496a200544250c7232d712ada946f4c711f",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "6bab48c87e5fa91f0452965e44a1c451ca75302efd0374cb57bf95441ba6559d": {
+      "package": "telnet@2.8",
+      "proof": {
+        "type": "package_record",
+        "record": "c01bf6f85e89557dbec32d75be4145284b3f8df056499b7279daafe0cf841278",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "87f8e4a680dc504e1da17c27467106fd78f99a9c26deac68c1dfea357a8171e4": {
+      "package": "kitty@0.49.2",
+      "proof": {
+        "type": "package_record",
+        "record": "24f763230e8b9ccef8a8869d9b1a4f0a08f525d95052320531338d70559738c9",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "8c04170ce484b5767919ff2c2dff6578c3725b87506bc358de613af3a6659cae": {
+      "package": "fzf@0.74.4",
+      "proof": {
+        "type": "package_record",
+        "record": "8ca2f784c09e2ec2f50b7540e84e9f88025281d8825018e8778a15b3a52625b3",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "8e8e9f53fa71686172c8024d655a991f2df7270c03246ac8fff7051125a071d6": {
+      "package": "uv@0.12.22",
+      "proof": {
+        "type": "package_record",
+        "record": "a14550d8fd25eca168dfe6b45e1ff57a36b114a3afb1fae3bdd91133a3ce3925",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "9dad3c80f4e0fb0267072da217ec7ac268a78e3a1705a144cca93e7c0c56c4e2": {
+      "package": "make@4.4.1",
+      "proof": {
+        "type": "package_record",
+        "record": "505dfe861704aae927fb38328de253d1b1e6e2ae0d813d30d9b77c7eca9c9fdb",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "a93a0a41607c7fe583bf988da35a7f89ec7f57258b992436a5697a754cb9fda6": {
+      "package": "jq@1.8.2",
+      "proof": {
+        "type": "package_record",
+        "record": "6d9d7f02207a83fead52b5ca6c42c2948a72d227bb0221a227fa50cf393388a0",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "abde93f4f7cfc582a217dfb93d35ca1c598934e27206bf45e0c349d4a3d84bac": {
+      "package": "fd@10.5.0",
+      "proof": {
+        "type": "package_record",
+        "record": "b5fd8b8d90dda76e057e737ae12a77dd711fd2bc624e25dc36bbd81600617e96",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "c9da88338e2dacfea264563713de7b2a6b041643f1849c86b9c7d5fa0d183ef2": {
+      "package": "utm@4.7.5",
+      "proof": {
+        "type": "package_record",
+        "record": "0298eaab2b97651f96a590af56f41504c248bd02774ac1ca384a98ea24bae49c",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "ca6cb4267f22c8a95b639ce48aee0af617535b68cc74ca363a087937b3f76ce7": {
+      "package": "rootbeer@0.1.0-main+74bb4473b039",
+      "proof": {
+        "type": "package_record",
+        "record": "67e694b5ba55ee066e88b06cff9d56c5c75ddbd14e9a67ba574558e723a599a1",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "cd98441737b14ff0186b367bcca424fbce29bf0373823e42289f2fb2552d1933": {
+      "package": "git@2.56.0",
+      "proof": {
+        "type": "package_record",
+        "record": "3df616dca4ad6be2b44e2643cd70b9465d6622f8576e70adac7969bc93981ef1",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "d2b41c9a72d1a8aabd23feb5d2b549d433152461527f08128479a935648d767d": {
+      "package": "rsync@3.5.1",
+      "proof": {
+        "type": "package_record",
+        "record": "0d5d78e7665d1912856dfbad5dff9d1811593a9ad10da49852d98a6220a77800",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "d442d825646ad5c35d6c0e09f75c4119ce6679256b57c172a5b479b2e66401e6": {
+      "package": "bat@0.26.1",
+      "proof": {
+        "type": "package_record",
+        "record": "e2b4f926e1f0ff4a075c6851d76dd04c2900b2c01be63f10a64ef297e15a8966",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "d8621e056f4d26c13588698fc823a77b8b153d09942f4e19316690676965579f": {
+      "package": "age@1.3.2",
+      "proof": {
+        "type": "package_record",
+        "record": "1063448fcf2427f30f3bd2c208e15a671f5c32fc41e2583d8edce55928c301ad",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "f7986360f808da95972da3e3703237c748db5bb7d79df0e0a49f3389ff4c226d": {
+      "package": "helium@0.18.2.1",
+      "proof": {
+        "type": "package_record",
+        "record": "37b83daa9f873b9ad8c8de27c7fb2c29738fbc875840daf492cb30584fdd8342",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
       }
     }
   },
   "packages": {
-    "rootbeer@0.1.0-main+351ac8046b92": {
-      "name": "rootbeer",
-      "version": "0.1.0-main+351ac8046b92",
+    "age@1.3.2": {
+      "name": "age",
+      "version": "1.3.2",
       "source": {
         "Url": {
-          "url": "ghcr://rootbeer-org/pdr/rootbeer@sha256:00519bb49b879ac761175318e292dcb3a2412da8ce25cb31dd279b927bc053f3",
-          "sha256": "00519bb49b879ac761175318e292dcb3a2412da8ce25cb31dd279b927bc053f3"
+          "url": "ghcr://rootbeer-org/pdr/age@sha256:22667d163bba05c2be2a67c4be932720068d2932aab3f8fcd2ac28599a8ef02b",
+          "sha256": "22667d163bba05c2be2a67c4be932720068d2932aab3f8fcd2ac28599a8ef02b"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "age": "bin/age",
+          "age-keygen": "bin/age-keygen"
+        }
+      },
+      "output_sha256": "6dfd1981e93adc6cb8767ceb4c8f5c37910b9d216df73e8f85da574763d4c7e7"
+    },
+    "bat@0.26.1": {
+      "name": "bat",
+      "version": "0.26.1",
+      "source": {
+        "Url": {
+          "url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-apple-darwin.tar.gz",
+          "sha256": "e30beff26779c9bf60bb541e1d79046250cb74378f2757f8eb250afddb19e114"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "bat": "bat-v0.26.1-aarch64-apple-darwin/bat"
+        }
+      },
+      "output_sha256": "6e03a3f8934e8003fa008d5ea752252276140bdb9a7d068074a08c3f3707e951"
+    },
+    "delta@0.19.2": {
+      "name": "delta",
+      "version": "0.19.2",
+      "source": {
+        "Url": {
+          "url": "https://github.com/dandavison/delta/releases/download/0.19.2/delta-0.19.2-aarch64-apple-darwin.tar.gz",
+          "sha256": "9be36612a5a13e9e386dc498fb8e50dc87c72ee42b63db0ea05b32f99a72a69a"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "delta": "delta-0.19.2-aarch64-apple-darwin/delta"
+        }
+      },
+      "output_sha256": "1ee304d77ac2fe15eced38cc7484330285245e4327975d10ad089cfea6aef0cc"
+    },
+    "direnv@2.37.1": {
+      "name": "direnv",
+      "version": "2.37.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/direnv@sha256:870943fa8fa919185ce5c7316fa274b1a79aa1d38b346311794e006c8015edf9",
+          "sha256": "870943fa8fa919185ce5c7316fa274b1a79aa1d38b346311794e006c8015edf9"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "direnv": "bin/direnv"
+        }
+      },
+      "output_sha256": "f48acfa7fd183a181debdd0240731c819928a3134765205eb6937f478ef92ff1"
+    },
+    "dust@1.2.6": {
+      "name": "dust",
+      "version": "1.2.6",
+      "source": {
+        "Url": {
+          "url": "https://github.com/bootandy/dust/releases/download/v1.2.6/dust-v1.2.6-aarch64-apple-darwin.tar.gz",
+          "sha256": "5c37ee0d353165c73aedd6b21b9133182221efe08f9a5e76c082d9d6d5a0935d"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "dust": "dust-v1.2.6-aarch64-apple-darwin/dust"
+        }
+      },
+      "output_sha256": "9ba891a4c9e51c25923f99699b9e4d0bbcc2eb3d77b46322f89386bf4501e800"
+    },
+    "eza@0.23.5": {
+      "name": "eza",
+      "version": "0.23.5",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/eza@sha256:06dab9afd05c66526cec70d6c9825f16d2659aae2d7a4dfbb3393cc90374436a",
+          "sha256": "06dab9afd05c66526cec70d6c9825f16d2659aae2d7a4dfbb3393cc90374436a"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "eza": "bin/eza"
+        }
+      },
+      "output_sha256": "3b71a68a2e2d71d3a3d24b079f561a11f757662407f1c4a01f9bd804cd298a11"
+    },
+    "fd@10.5.0": {
+      "name": "fd",
+      "version": "10.5.0",
+      "source": {
+        "Url": {
+          "url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-apple-darwin.tar.gz",
+          "sha256": "b67e1836c468e42e411984b56e52fa7abec08c2bd22c867398e7cc134aac5e12"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "fd": "fd-v10.5.0-aarch64-apple-darwin/fd"
+        }
+      },
+      "output_sha256": "c5f54725e95bf3d26d237dbc76ee2ed7222966cfbd177d60c575e25e8898e4ed"
+    },
+    "fzf@0.74.4": {
+      "name": "fzf",
+      "version": "0.74.4",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/fzf@sha256:702d4cf631b5e329d5668c8515787c4401235bc2d0f04a90a13b6f6a003c6219",
+          "sha256": "702d4cf631b5e329d5668c8515787c4401235bc2d0f04a90a13b6f6a003c6219"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "fzf": "bin/fzf"
+        }
+      },
+      "output_sha256": "e815b7e7fbda9bf3b3789042b57fde3c36d8169793a5f9cf267599a5f515df8e"
+    },
+    "ghostty@1.3.1": {
+      "name": "ghostty",
+      "version": "1.3.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/ghostty@sha256:18cff2b0a6cee90eead9c7d3064e808a252a40baf214aa752c1ecb793b8f5f69",
+          "sha256": "18cff2b0a6cee90eead9c7d3064e808a252a40baf214aa752c1ecb793b8f5f69"
+        }
+      },
+      "install": "Dmg",
+      "provides": {
+        "bins": {},
+        "apps": {
+          "Ghostty.app": "Ghostty.app"
+        }
+      },
+      "output_sha256": "e783a9a7dc4422624a9e7d2256ce80932573d6708620d9d93a6e5afe95b09867"
+    },
+    "git@2.56.0": {
+      "name": "git",
+      "version": "2.56.0",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/git@sha256:71f5770087128bd9c7ef10724de2a245e372df7492fa02bef36efe1d809c5292",
+          "sha256": "71f5770087128bd9c7ef10724de2a245e372df7492fa02bef36efe1d809c5292"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "git": "bin/git",
+          "git-receive-pack": "bin/git-receive-pack",
+          "git-upload-archive": "bin/git-upload-archive",
+          "git-upload-pack": "bin/git-upload-pack"
+        }
+      },
+      "output_sha256": "2203b39a5e2f7ef155875ddf5582de5e9841f401cc804ea9812790f4789f8323",
+      "runtime_dependencies": {
+        "libiconv@1.19": {
+          "name": "libiconv",
+          "version": "1.19",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/libiconv@sha256:b865b50b545f898886abde209382d3494ff3e1818b256c8070ab14f08415c9f4",
+              "sha256": "b865b50b545f898886abde209382d3494ff3e1818b256c8070ab14f08415c9f4"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "iconv": "bin/iconv"
+            }
+          },
+          "output_sha256": "5241d29bdb00e0e89758a2c45586ffc61dad26c53b2adda619e060d8c97bfceb"
+        },
+        "openssl@4.0.2": {
+          "name": "openssl",
+          "version": "4.0.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/openssl@sha256:a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67",
+              "sha256": "a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "openssl": "bin/openssl"
+            }
+          },
+          "output_sha256": "0a1928ca8a54410451b26565b7fad94e271a0e57212ef929d8679532ca88644b"
+        },
+        "zlib@1.3.2": {
+          "name": "zlib",
+          "version": "1.3.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/zlib@sha256:1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf",
+              "sha256": "1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {}
+          },
+          "output_sha256": "6352f70c815dd2338ed1fe4e9abe1c9cfe4627aeb3c884eca5a22a6b7b9c6552"
+        }
+      }
+    },
+    "helium@0.18.2.1": {
+      "name": "helium",
+      "version": "0.18.2.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/helium@sha256:86982d8df340d5a1bf1a0c76ada33d7d26797c6c3424a44afa676159b6a3e3eb",
+          "sha256": "86982d8df340d5a1bf1a0c76ada33d7d26797c6c3424a44afa676159b6a3e3eb"
+        }
+      },
+      "install": "Dmg",
+      "provides": {
+        "bins": {},
+        "apps": {
+          "Helium.app": "Helium.app"
+        }
+      },
+      "output_sha256": "4795413a4b2692330dae825769e0a1e8d76936f80961b5442eb352cdb9c5071c"
+    },
+    "jq@1.8.2": {
+      "name": "jq",
+      "version": "1.8.2",
+      "source": {
+        "Url": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-macos-arm64",
+          "sha256": "2d75340ba57a4b4b4c8708a21c2dc8e958a48aaa8bba13b27f77f6e4c0eca07e"
+        }
+      },
+      "install": {
+        "Binary": {
+          "path": "jq"
+        }
+      },
+      "provides": {
+        "bins": {
+          "jq": "jq"
+        }
+      },
+      "output_sha256": "9c30cc24370e1a5f0465fea387bac6a82547290a54eadac68d126ee1a7cc1b05"
+    },
+    "kitty@0.49.2": {
+      "name": "kitty",
+      "version": "0.49.2",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/kitty@sha256:e524b894145d89cb76b584e3a9691196ae56bfa31d51384a44aa774252b7cef7",
+          "sha256": "e524b894145d89cb76b584e3a9691196ae56bfa31d51384a44aa774252b7cef7"
+        }
+      },
+      "install": "Dmg",
+      "provides": {
+        "bins": {
+          "kitten": "kitty.app/Contents/MacOS/kitten",
+          "kitty": "kitty.app/Contents/MacOS/kitty"
+        },
+        "apps": {
+          "kitty.app": "kitty.app"
+        }
+      },
+      "output_sha256": "1a92bf5d3f63225784e4d4569a217eb66aeda69d6f86cf6b89556508fe08d3f1"
+    },
+    "make@4.4.1": {
+      "name": "make",
+      "version": "4.4.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/make@sha256:0e0d36b04a79d58ccbe359ee80444f01b3a6a64029fe736895a4d4190ea27350",
+          "sha256": "0e0d36b04a79d58ccbe359ee80444f01b3a6a64029fe736895a4d4190ea27350"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "make": "bin/make"
+        }
+      },
+      "output_sha256": "a4b9815c793bc672302ef6ccd3bbd0ff02847f9e2b0e0d56e5f14974a05e7ca3"
+    },
+    "neovim@0.12.5": {
+      "name": "neovim",
+      "version": "0.12.5",
+      "source": {
+        "Url": {
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.5/nvim-macos-arm64.tar.gz",
+          "sha256": "65fb000099e47ca1b762584c484cc833f40e30851a0ec450d4174e16317c1f9b"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "nvim": "nvim-macos-arm64/bin/nvim"
+        }
+      },
+      "output_sha256": "67af43f834be13f06f19967d7742feb4db3bb0f9bc841ddb79edc0c39eccda03"
+    },
+    "openssh@10.5p1": {
+      "name": "openssh",
+      "version": "10.5p1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/openssh@sha256:8fd5d7fe22e6b31987238d31ed424376fa07a0174d5dd0a98557d9cd21853d2a",
+          "sha256": "8fd5d7fe22e6b31987238d31ed424376fa07a0174d5dd0a98557d9cd21853d2a"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "scp": "bin/scp",
+          "sftp": "bin/sftp",
+          "sftp-server": "libexec/sftp-server",
+          "ssh": "bin/ssh",
+          "ssh-add": "bin/ssh-add",
+          "ssh-agent": "bin/ssh-agent",
+          "ssh-keygen": "bin/ssh-keygen",
+          "ssh-keyscan": "bin/ssh-keyscan",
+          "ssh-pkcs11-helper": "libexec/ssh-pkcs11-helper",
+          "ssh-sk-helper": "libexec/ssh-sk-helper",
+          "sshd": "sbin/sshd"
+        }
+      },
+      "output_sha256": "c4dc7c6df6df66f21f487daee04d3e144e70c60be0d6fa651fbeee15a23e53dc",
+      "runtime_dependencies": {
+        "ldns@1.9.2": {
+          "name": "ldns",
+          "version": "1.9.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/ldns@sha256:495e1502f6d6c8df810dc023b5402a73ecfd5f2ac307ac9aa4f4fe501adca2e0",
+              "sha256": "495e1502f6d6c8df810dc023b5402a73ecfd5f2ac307ac9aa4f4fe501adca2e0"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "drill": "bin/drill",
+              "ldns-key2ds": "bin/ldns-key2ds",
+              "ldns-keygen": "bin/ldns-keygen",
+              "ldns-read-zone": "bin/ldns-read-zone",
+              "ldns-signzone": "bin/ldns-signzone",
+              "ldns-verify-zone": "bin/ldns-verify-zone"
+            }
+          },
+          "output_sha256": "6fcca24b45e00ba3dceb181221f475ea5376957723b7771dd459b0c4e99495e0",
+          "runtime_dependencies": {
+            "openssl@4.0.2": {
+              "name": "openssl",
+              "version": "4.0.2",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/openssl@sha256:a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67",
+                  "sha256": "a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {
+                  "openssl": "bin/openssl"
+                }
+              },
+              "output_sha256": "0a1928ca8a54410451b26565b7fad94e271a0e57212ef929d8679532ca88644b"
+            }
+          }
+        },
+        "libfido2@1.17.0": {
+          "name": "libfido2",
+          "version": "1.17.0",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/libfido2@sha256:6741b5a61f1a65ac8a53bfd3848e926e4a107b200b24ecca7ce642974a993a02",
+              "sha256": "6741b5a61f1a65ac8a53bfd3848e926e4a107b200b24ecca7ce642974a993a02"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "fido2-assert": "bin/fido2-assert",
+              "fido2-cred": "bin/fido2-cred",
+              "fido2-token": "bin/fido2-token"
+            }
+          },
+          "output_sha256": "2d0c93ee3d31fe25dd355a975c4f0e92395b499ac1ae542e944be074e07e9137",
+          "runtime_dependencies": {
+            "openssl@4.0.2": {
+              "name": "openssl",
+              "version": "4.0.2",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/openssl@sha256:a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67",
+                  "sha256": "a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {
+                  "openssl": "bin/openssl"
+                }
+              },
+              "output_sha256": "0a1928ca8a54410451b26565b7fad94e271a0e57212ef929d8679532ca88644b"
+            },
+            "zlib@1.3.2": {
+              "name": "zlib",
+              "version": "1.3.2",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/zlib@sha256:1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf",
+                  "sha256": "1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {}
+              },
+              "output_sha256": "6352f70c815dd2338ed1fe4e9abe1c9cfe4627aeb3c884eca5a22a6b7b9c6552"
+            }
+          }
+        },
+        "openssl@4.0.2": {
+          "name": "openssl",
+          "version": "4.0.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/openssl@sha256:a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67",
+              "sha256": "a809e87b291b374fd155940bd941edb8f59fbd385d8cc35ee1350510285bab67"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "openssl": "bin/openssl"
+            }
+          },
+          "output_sha256": "0a1928ca8a54410451b26565b7fad94e271a0e57212ef929d8679532ca88644b"
+        },
+        "zlib@1.3.2": {
+          "name": "zlib",
+          "version": "1.3.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/zlib@sha256:1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf",
+              "sha256": "1b1ded0ead67a4a64c4c6f21028b1fd30dc01df0aba739ecced0cdc6c16924bf"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {}
+          },
+          "output_sha256": "6352f70c815dd2338ed1fe4e9abe1c9cfe4627aeb3c884eca5a22a6b7b9c6552"
+        }
+      }
+    },
+    "ripgrep@15.2.0": {
+      "name": "ripgrep",
+      "version": "15.2.0",
+      "source": {
+        "Url": {
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-apple-darwin.tar.gz",
+          "sha256": "3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad973e4"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "rg": "ripgrep-15.2.0-aarch64-apple-darwin/rg"
+        }
+      },
+      "output_sha256": "a3997a1d383ac97be0eec9d325c1cd3fd30a0981b05e2e7f40583a3adc59e843"
+    },
+    "rootbeer@0.1.0-main+74bb4473b039": {
+      "name": "rootbeer",
+      "version": "0.1.0-main+74bb4473b039",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/rootbeer@sha256:c0fe225d8d65b6ae7f4e6d051089c862209b5139e251a0eb924a26e7e5191c1b",
+          "sha256": "c0fe225d8d65b6ae7f4e6d051089c862209b5139e251a0eb924a26e7e5191c1b"
         }
       },
       "install": {
@@ -45,7 +877,411 @@
           "rootbeer-forge": "bin/rootbeer-forge"
         }
       },
-      "output_sha256": "753cd39dfd773fb44c4d960b1daa9eea5b969f72265bb31638dfb2349779348f"
+      "output_sha256": "622608f8d41cab96d67c4512436badf900519b1c7eddf951214b4760adbf072a"
+    },
+    "rsync@3.5.1": {
+      "name": "rsync",
+      "version": "3.5.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/rsync@sha256:e8061192f73553e1c81f13e0e6acdd5a3b60b62a3ff3163023fcdf86bfd30e2d",
+          "sha256": "e8061192f73553e1c81f13e0e6acdd5a3b60b62a3ff3163023fcdf86bfd30e2d"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "rsync": "bin/rsync"
+        }
+      },
+      "output_sha256": "cdadf229595079981e4865ed4762295cdaabade286125d89fd739b8b2e1b87e7",
+      "runtime_dependencies": {
+        "libidn2@2.3.8": {
+          "name": "libidn2",
+          "version": "2.3.8",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/libidn2@sha256:de37dd31e1a34e4088a9450f05b1c91cb57a748c83b0a89eedaebe1ebece2fe5",
+              "sha256": "de37dd31e1a34e4088a9450f05b1c91cb57a748c83b0a89eedaebe1ebece2fe5"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "idn2": "bin/idn2"
+            }
+          },
+          "output_sha256": "30c6dbe6a0c20ddcdf4c816374448d39dbd0c7ca7193731717bb92d1ff4f475f",
+          "runtime_dependencies": {
+            "libiconv@1.19": {
+              "name": "libiconv",
+              "version": "1.19",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/libiconv@sha256:c314e4551d22aa5974b428192cd011ff514f2728db4d509dcd70772d89e0e2be",
+                  "sha256": "c314e4551d22aa5974b428192cd011ff514f2728db4d509dcd70772d89e0e2be"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {
+                  "iconv": "bin/iconv"
+                }
+              },
+              "output_sha256": "86a8e8c87e9233ce2281deb2a79ccca2c73994557c5741ca6528339c3ec0a6a2"
+            },
+            "libunistring@1.4.2": {
+              "name": "libunistring",
+              "version": "1.4.2",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/libunistring@sha256:6a933e1f94ab0cec24ec7d17e84f23f0f7463d606ef74df4f2536d7bf20e7a3b",
+                  "sha256": "6a933e1f94ab0cec24ec7d17e84f23f0f7463d606ef74df4f2536d7bf20e7a3b"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {}
+              },
+              "output_sha256": "76ef1105248faaf2db192e3175f5bee5b7cb02a52eac5f2bdd83485f22f4d6bd",
+              "runtime_dependencies": {
+                "libiconv@1.19": {
+                  "name": "libiconv",
+                  "version": "1.19",
+                  "source": {
+                    "Url": {
+                      "url": "ghcr://rootbeer-org/pdr/libiconv@sha256:c314e4551d22aa5974b428192cd011ff514f2728db4d509dcd70772d89e0e2be",
+                      "sha256": "c314e4551d22aa5974b428192cd011ff514f2728db4d509dcd70772d89e0e2be"
+                    }
+                  },
+                  "install": {
+                    "Archive": {
+                      "format": "TarGz",
+                      "strip_prefix": null
+                    }
+                  },
+                  "provides": {
+                    "bins": {
+                      "iconv": "bin/iconv"
+                    }
+                  },
+                  "output_sha256": "86a8e8c87e9233ce2281deb2a79ccca2c73994557c5741ca6528339c3ec0a6a2"
+                }
+              }
+            }
+          }
+        },
+        "lz4@1.10.0": {
+          "name": "lz4",
+          "version": "1.10.0",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/lz4@sha256:002cef1701e55ed35a23b40aca6ff94712a29d08c88437fa3c65c64cd694dc7a",
+              "sha256": "002cef1701e55ed35a23b40aca6ff94712a29d08c88437fa3c65c64cd694dc7a"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "lz4": "bin/lz4",
+              "lz4c": "bin/lz4c",
+              "lz4cat": "bin/lz4cat",
+              "unlz4": "bin/unlz4"
+            }
+          },
+          "output_sha256": "ddadf69e35004455e1e9b8bdc0a493c8dfcf1f548ee9b2eca61b785a7b09fc9f"
+        },
+        "openssl@4.0.2": {
+          "name": "openssl",
+          "version": "4.0.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/openssl@sha256:2d9b2d57bc8ad706188e45ff052cd06f14e3af75cd7574be829b3e64d7e1bef8",
+              "sha256": "2d9b2d57bc8ad706188e45ff052cd06f14e3af75cd7574be829b3e64d7e1bef8"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "openssl": "bin/openssl"
+            }
+          },
+          "output_sha256": "6d9a4bf03a8e5625e2e3ab2d7acad9b8fd04b87c6737a9274f888ebb6b6b3ec1"
+        },
+        "zlib@1.3.2": {
+          "name": "zlib",
+          "version": "1.3.2",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/zlib@sha256:c6764464c02992674dcba7931b8eb5e967444f6699df4a670a91d27494aff21a",
+              "sha256": "c6764464c02992674dcba7931b8eb5e967444f6699df4a670a91d27494aff21a"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {}
+          },
+          "output_sha256": "ee0c87652e0a096a84bc6b37cc9566ddfc16e77715d4723e878ff57a2727a140"
+        },
+        "zstd@1.5.7": {
+          "name": "zstd",
+          "version": "1.5.7",
+          "source": {
+            "Url": {
+              "url": "ghcr://rootbeer-org/pdr/zstd@sha256:360c6f60a8754417c920c8401d1476887537bb2a310d8699d0cb7f2231d41367",
+              "sha256": "360c6f60a8754417c920c8401d1476887537bb2a310d8699d0cb7f2231d41367"
+            }
+          },
+          "install": {
+            "Archive": {
+              "format": "TarGz",
+              "strip_prefix": null
+            }
+          },
+          "provides": {
+            "bins": {
+              "unzstd": "bin/unzstd",
+              "zstd": "bin/zstd",
+              "zstdcat": "bin/zstdcat",
+              "zstdmt": "bin/zstdmt"
+            }
+          },
+          "output_sha256": "f32811788145b9031c4d102fc0d9f498fbd85da2cd27e92c0ca7ac2bf30d6d9a",
+          "runtime_dependencies": {
+            "lz4@1.10.0": {
+              "name": "lz4",
+              "version": "1.10.0",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/lz4@sha256:002cef1701e55ed35a23b40aca6ff94712a29d08c88437fa3c65c64cd694dc7a",
+                  "sha256": "002cef1701e55ed35a23b40aca6ff94712a29d08c88437fa3c65c64cd694dc7a"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {
+                  "lz4": "bin/lz4",
+                  "lz4c": "bin/lz4c",
+                  "lz4cat": "bin/lz4cat",
+                  "unlz4": "bin/unlz4"
+                }
+              },
+              "output_sha256": "ddadf69e35004455e1e9b8bdc0a493c8dfcf1f548ee9b2eca61b785a7b09fc9f"
+            },
+            "zlib@1.3.2": {
+              "name": "zlib",
+              "version": "1.3.2",
+              "source": {
+                "Url": {
+                  "url": "ghcr://rootbeer-org/pdr/zlib@sha256:c6764464c02992674dcba7931b8eb5e967444f6699df4a670a91d27494aff21a",
+                  "sha256": "c6764464c02992674dcba7931b8eb5e967444f6699df4a670a91d27494aff21a"
+                }
+              },
+              "install": {
+                "Archive": {
+                  "format": "TarGz",
+                  "strip_prefix": null
+                }
+              },
+              "provides": {
+                "bins": {}
+              },
+              "output_sha256": "ee0c87652e0a096a84bc6b37cc9566ddfc16e77715d4723e878ff57a2727a140"
+            }
+          }
+        }
+      }
+    },
+    "starship@1.26.0": {
+      "name": "starship",
+      "version": "1.26.0",
+      "source": {
+        "Url": {
+          "url": "https://github.com/starship/starship/releases/download/v1.26.0/starship-aarch64-apple-darwin.tar.gz",
+          "sha256": "c40b27b11f580411e068f2fa6c1be7830a387c0bc47a94d1d37f32b054c5361d"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "starship": "starship"
+        }
+      },
+      "output_sha256": "8b76e79afa27019856398e841b45bfc38b54c9b2c460bc252cec158f14bfd533"
+    },
+    "telnet@2.8": {
+      "name": "telnet",
+      "version": "2.8",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/telnet@sha256:a2f4d128744c996bd3e6f7d10843c2d5fb14a1a15e171097591b4fbb0abdf426",
+          "sha256": "a2f4d128744c996bd3e6f7d10843c2d5fb14a1a15e171097591b4fbb0abdf426"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "telnet": "bin/telnet"
+        }
+      },
+      "output_sha256": "a998469041cd3349624420c0acd08f03f67a263724eaac552523a69dc5588b36"
+    },
+    "tree-sitter@0.27.0": {
+      "name": "tree-sitter",
+      "version": "0.27.0",
+      "source": {
+        "Url": {
+          "url": "https://github.com/tree-sitter/tree-sitter/releases/download/v0.27.0/tree-sitter-cli-macos-arm64.zip",
+          "sha256": "f278063d8544160f6f89f7f8dba6ba112cb0dd1669757788d2bb7a8a613d2c58"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "Zip",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "tree-sitter": "tree-sitter"
+        }
+      },
+      "output_sha256": "9bdf5c5d7afafbfb0f0fc5c98293f71e45a32d6fa53c16d279adb9cfff4ed89c"
+    },
+    "utm@4.7.5": {
+      "name": "utm",
+      "version": "4.7.5",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/utm@sha256:a8435c93cfb5f8bbfeea4b134cfad1ac66b67632b75e438c63b1a8ae043bef0e",
+          "sha256": "a8435c93cfb5f8bbfeea4b134cfad1ac66b67632b75e438c63b1a8ae043bef0e"
+        }
+      },
+      "install": "Dmg",
+      "provides": {
+        "bins": {},
+        "apps": {
+          "UTM.app": "UTM.app"
+        }
+      },
+      "output_sha256": "c855efc630cf18546d3327dbf26fd5aa6eaf2c3c55ccd0a0de13628412a10552"
+    },
+    "uv@0.12.22": {
+      "name": "uv",
+      "version": "0.12.22",
+      "source": {
+        "Url": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.22/uv-aarch64-apple-darwin.tar.gz",
+          "sha256": "5d714de09501a59393ceca78f4bc232a50478729640d251907160299b2a93ddd"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "uv": "uv-aarch64-apple-darwin/uv",
+          "uvx": "uv-aarch64-apple-darwin/uvx"
+        }
+      },
+      "output_sha256": "6240a21f104b4bbcbc7d67bfbfdb853a7540e1380e3c61deb2e603c0c0292b35"
+    },
+    "yq@4.54.1": {
+      "name": "yq",
+      "version": "4.54.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/yq@sha256:5ffa59d2121d56ba093d84a13d7de7792c5d944d1f51b665a18b142c3cee9f85",
+          "sha256": "5ffa59d2121d56ba093d84a13d7de7792c5d944d1f51b665a18b142c3cee9f85"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "yq": "bin/yq"
+        }
+      },
+      "output_sha256": "339fea61ff416579fd52f53df9eb4904a6b04ea682611d5c26cd599137d3386f"
+    },
+    "zoxide@0.10.0": {
+      "name": "zoxide",
+      "version": "0.10.0",
+      "source": {
+        "Url": {
+          "url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-apple-darwin.tar.gz",
+          "sha256": "b55ae6f2f5f23d0a6ccb3bd4eeb2af9c7e0a6556e5255c82100e40305129bbb0"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "zoxide": "zoxide"
+        }
+      },
+      "output_sha256": "ad11afc495ade36ef540d19a8ec87a182636c06598e275f290abf8f0c8fb67ea"
     }
   }
 }

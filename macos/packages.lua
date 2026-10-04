@@ -1,6 +1,6 @@
 local lib = require("lib")
 
-lib.add_packages({
+require("rootbeer").packages({
   "helium",
   "make",
   "utm",
@@ -13,7 +13,7 @@ lib.add_brew({
     "bash",
     "herdr",
     "lima",
-    "tig"
+    "tig",
   },
   casks = {
     "aerospace",
