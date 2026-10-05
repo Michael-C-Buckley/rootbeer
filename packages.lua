@@ -7,6 +7,7 @@ rb.packages({
   "direnv",
   "eza",
   "dust",
+  "kubectl",
   "fd",
   "fzf",
   "ripgrep",

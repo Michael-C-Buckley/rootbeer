@@ -10,7 +10,7 @@
       }
     }
   },
-  "input_fingerprint": "bbbfb51984331536c227c933b6f148b561645581c032fb77fd9e26e25f31d2d4",
+  "input_fingerprint": "fdf087f445630ed8bf3e9d7de310c1a64eb5f6415ecb3b133b35a3a474756b55",
   "resolutions": {
     "011490eaaffa1253df9f89fc6ecefd625acd550d705a3b3d10e3d5eccd8a719b": {
       "package": "ripgrep@15.2.0",
@@ -233,6 +233,15 @@
       "proof": {
         "type": "package_record",
         "record": "1063448fcf2427f30f3bd2c208e15a671f5c32fc41e2583d8edce55928c301ad",
+        "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
+        "system": "aarch64-macos"
+      }
+    },
+    "db126598096e58a53cb6c8a13845830aafb0795ec8faa5328948a7a2571acd01": {
+      "package": "kubectl@1.37.1",
+      "proof": {
+        "type": "package_record",
+        "record": "bde394d76f695806b38cc8a625f1713d9d3e395f268be2ade4263a1890cfbb19",
         "public_key": "028c5b185fb63ea61128a0bf6fb0decc8b700020561db08d82a998c7d0493bc0",
         "system": "aarch64-macos"
       }
@@ -593,6 +602,28 @@
         }
       },
       "output_sha256": "1a92bf5d3f63225784e4d4569a217eb66aeda69d6f86cf6b89556508fe08d3f1"
+    },
+    "kubectl@1.37.1": {
+      "name": "kubectl",
+      "version": "1.37.1",
+      "source": {
+        "Url": {
+          "url": "ghcr://rootbeer-org/pdr/kubectl@sha256:08257115470c2d9bfceb6e0bc280c9b3ab56a909995d8b262baa6bc4f84075d8",
+          "sha256": "08257115470c2d9bfceb6e0bc280c9b3ab56a909995d8b262baa6bc4f84075d8"
+        }
+      },
+      "install": {
+        "Archive": {
+          "format": "TarGz",
+          "strip_prefix": null
+        }
+      },
+      "provides": {
+        "bins": {
+          "kubectl": "bin/kubectl"
+        }
+      },
+      "output_sha256": "deb1fe4c0822eca9db77d93765424cdc3d7935656d2fc45b04bd398e2fb651f7"
     },
     "make@4.4.1": {
       "name": "make",
