@@ -41,11 +41,11 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 on-mode-changed = []
 
 [workspace-to-monitor-force-assignment]
-1 = ['^LS37D80xU$', 'built-in']
-2 = ['^LS37D80xU$', 'built-in']
-3 = ['^LS37D80xU$', 'built-in']
-4 = ['^LS37D80xU$', 'built-in']
-5 = ['^LS37D80xU$', 'built-in']
+1 = ['^BenQ RD320UA$', 'built-in']
+2 = ['^BenQ RD320UA$', 'built-in']
+3 = ['^BenQ RD320UA$', 'built-in']
+4 = ['^BenQ RD320UA$', 'built-in']
+5 = ['^BenQ RD320UA$', 'built-in']
 6 = 'built-in'
 7 = 'built-in'
 8 = 'built-in'
