@@ -17,12 +17,6 @@ pkgs.mkShellNoCC {
       stylua
       treefmt
       typos
-
-      # Tree-sitter
-      clang
-      curl
-      gnutar
-      tree-sitter
     ]
     ++ extraPkgs;
 

@@ -1,8 +1,8 @@
 local rb = require("rootbeer")
 
-rb.profile.when("fallback", function()
+if rb.profile.current() ~= "nixos_desktop" then
   rb.package("kitty")
-end)
+end
 
 local cfg = "configs/kitty/"
 local out = "~.config/kitty/"
