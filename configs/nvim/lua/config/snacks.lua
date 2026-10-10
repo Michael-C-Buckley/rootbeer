@@ -2,7 +2,10 @@ local snacks = require("snacks")
 
 snacks.setup({
   dashboard = { enabled = false },
-  explorer = { enabled = true },
+  explorer = {
+    enabled = true,
+    replace_netrw = false, -- Let Oil handle directory buffers.
+  },
   notifier = {
     enabled = true,
     style = "compact",

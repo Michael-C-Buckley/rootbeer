@@ -1,6 +1,6 @@
 local rb = require("rootbeer")
 
-rb.profile.when("fallback", function()
+rb.profile.when({ "fallback", "linux_desktop" }, function()
   rb.packages({ "neovim", "tree-sitter" })
 end)
 
